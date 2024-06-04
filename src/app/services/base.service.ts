@@ -38,14 +38,21 @@ export class BaseService {
     return this.http.delete(url);
   }
 
+  updateObject(id: number, obj: ObjectModel): Observable<ObjectModel>{
+    const url = `${this.objectsUrl}/${id}`;
+    obj.id = id;
+    return this.http.put<ObjectModel>(url, obj);
+  }
   updateRequest(id: number, req: RequestModel): Observable<RequestModel>{
     const url = `${this.requestsUrl}/${id}`;
     req.id = id;
     return this.http.put<RequestModel>(url, req);
   }
 
+  findObjectById(id: number): Observable<ObjectModel>{
+    return this.http.get<ObjectModel>(`${this.objectsUrl}/${id}`);
+  }
   findRequestById(id: number): Observable<RequestModel>{
     return this.http.get<RequestModel>(`${this.requestsUrl}/${id}`);
   }
-
 }

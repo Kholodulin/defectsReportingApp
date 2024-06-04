@@ -8,11 +8,28 @@
           [rowsPerPageOptions]="[5, 10, 20]">
       <ng-template pTemplate="header" let-columns>
           <tr>
-              <th *ngFor="let col of columns">
-                  {{ col.header }}
-              </th>
-              <th>Status</th>
-              <th></th>
+            <th *ngFor="let col of columns" pSortableColumn={{col.header}} >{{ col.header }}
+              <p-sortIcon field={{col.header}} />
+            </th>
+            <th>Status</th>
+          </tr>
+          <tr>
+            <th *ngFor="let col of columns">
+              <p-columnFilter type="text" field={{col.header}} [showClearButton]="false" />
+            </th>
+            <th>
+              <p-columnFilter field="status" matchMode="equals" [showMenu]="false">
+                  <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                      <p-dropdown
+                          [options]="statusOptions"
+                          (onChange)="filter($event.value)"
+                          placeholder="Select One"
+                          appendTo="body"
+                          [showClear]="true">
+                      </p-dropdown>
+                  </ng-template>
+              </p-columnFilter>
+          </th>
           </tr>
       </ng-template>
       <ng-template pTemplate="body" let-rowData let-columns="columns">
@@ -29,9 +46,6 @@
                   placeholder="Set status"
                   appendTo="body"
                   (onChange)="onDropdownChange($event, rowData)" />
-              </td>
-              <td width="10%">
-                <p-button (onClick)="deleteRequest(rowData.id)" icon="pi pi-trash"  severity="danger"></p-button>
               </td>
           </tr>
       </ng-template>

@@ -1,5 +1,6 @@
-<ng-template #objectListTemplate let-objects="objects" let-isSelectBtn="isSelectBtn" let-isDelBtn="isDelBtn">
+<ng-template #objectListTemplate let-objects="objects" let-isSelect="isSelect" let-isEdit="isEdit">
   <p-table
+    dataKey="id"
     [columns]="cols"
     [value]="objects"
     [tableStyle]="{ 'min-width': '50rem' }"
@@ -8,20 +9,27 @@
     [rowsPerPageOptions]="[5, 10, 20]">
     <ng-template pTemplate="header" let-columns>
       <tr>
-        <th *ngFor="let col of columns">{{ col.header }}</th>
-        <th></th>
+        <th *ngFor="let col of columns" pSortableColumn={{col.header}} >{{ col.header }}
+          <p-sortIcon field={{col.header}} />
+        </th><th></th>
+      </tr>
+      <tr>
+        <th *ngFor="let col of columns">
+            <p-columnFilter type="text" field={{col.header}} [showClearButton]="false" />
+        </th><th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <td *ngFor="let col of columns">{{ rowData[col.field] }}</td>
-        <td width="10%">
-          <p-button *ngIf="isSelectBtn" (onClick)="selectObject(rowData.id)" label="Select"></p-button>
-          <p-button *ngIf="isDelBtn" (onClick)="deleteObject(rowData.id)" icon="pi pi-trash" severity="danger"></p-button>
+        <td width="5%">
+          <p-button *ngIf="isSelect" (onClick)="selectObject(rowData.id)" label="Select"></p-button>
+          <p-button *ngIf="isEdit" (onClick)="editObject(rowData.id)" icon="pi pi-pencil" severity="danger"></p-button>
+          <p-button *ngIf="isEdit" (onClick)="deleteObject(rowData.id)" icon="pi pi-trash" severity="danger"></p-button>
         </td>
       </tr>
     </ng-template>
   </p-table>
 </ng-template>
-<ng-container *ngTemplateOutlet="objectListTemplate; context: { objects: objects, isSelectBtn: isSelectBtn, isDelBtn: isDelBtn }">
+<ng-container *ngTemplateOutlet="objectListTemplate; context: { objects: objects, isSelect: isSelect, isEdit: isEdit }">
 </ng-container>
