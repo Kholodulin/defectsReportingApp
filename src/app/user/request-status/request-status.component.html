@@ -1,0 +1,13 @@
+<div *ngIf="request; else loading">
+  <h2>Request Status</h2>
+  <p><strong>Title:</strong> {{ request.title }}</p>
+  <p><strong>Description:</strong> {{ request.description }}</p>
+  <p><strong>Email:</strong> {{ request.email }}</p>
+  <p><strong>Submission Date:</strong> {{ request.submissionDate}}</p>
+  <p><strong>Status:</strong> {{ request.status }}</p>
+  <p><strong>Object ID:</strong> {{ request.objectId }}</p>
+</div>
+
+<ng-template #loading>
+  <p>Loading...</p>
+</ng-template>

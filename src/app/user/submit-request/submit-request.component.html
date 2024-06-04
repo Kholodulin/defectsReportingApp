@@ -1,0 +1,32 @@
+<div class="card">
+  <form (ngSubmit)="submitRequest()" #requestForm="ngForm">
+    <div class="flex flex-column h-full w-4/5 align-items-center">
+      <h2>Submit a Request</h2>
+      <div class="flex flex-column field">
+        <div class="p-fluid">
+          <label for="title" class="font-semibold w-6rem">Title</label>
+          <input pInputText name="title" [(ngModel)]="request.title" required class="input-field"/>
+          <label for="description" >Description</label>
+          <textarea pInputTextarea name="description" required class="input-field"
+              [(ngModel)]="request.description"
+              [autoResize]="true">
+          </textarea>
+          <label>Email</label>
+          <input type="email" pInputText [(ngModel)]="request.email" name="email" required class="input-field"/>
+        </div>
+        <div>
+          <label for="object">Object</label>
+          <app-table-template [objects]="objects" [isSelectBtn]="true" (objectSelected)="selectedObject($event)">
+          </app-table-template>
+        </div>
+      </div>
+      <div class="p-field">
+        <p-button label="Submit" type="submit"></p-button>
+      </div>
+    </div>
+  </form>
+  <div *ngIf="requestLink">
+    <p>Request submitted successfully. You can check the status of your request</p>
+    <p-button label="Cheak request status" severity="secondary" [routerLink]="requestLink"></p-button>
+  </div>
+</div>
