@@ -35,7 +35,8 @@
       <ng-template pTemplate="body" let-rowData let-columns="columns">
           <tr>
               <td *ngFor="let col of columns">
-                  {{ rowData[col.field] }}
+                <span *ngIf="col.field !== 'submissionDate'">{{ rowData[col.field] }}</span>
+                <span *ngIf="col.field === 'submissionDate'">{{ rowData[col.field] | date:'dd-MM-yyyy' }}</span>
               </td>
               <td>
                 <p-dropdown
