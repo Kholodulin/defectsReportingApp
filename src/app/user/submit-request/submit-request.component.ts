@@ -3,8 +3,8 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit, TemplateRef, ViewChild } from '@angular/core';
-import { FormsModule } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule, NgForm } from '@angular/forms';
 import { RequestModel } from '../../models/request-model';
 import { ObjectModel } from '../../models/object-model';
 import { BaseService } from '../../services/base.service';
@@ -20,17 +20,17 @@ import { TableTemplateComponent } from "../../components/table-template/table-te
     templateUrl: './submit-request.component.html',
     styleUrl: './submit-request.component.css',
     imports: [
-        CommonModule,
-        TableModule,
-        FormsModule,
-        DropdownModule,
-        ButtonModule,
-        InputTextModule,
-        FloatLabelModule,
-        InputTextareaModule,
-        RouterLink,
-        ObjectsListComponent,
-        TableTemplateComponent
+      CommonModule,
+      TableModule,
+      FormsModule,
+      DropdownModule,
+      ButtonModule,
+      InputTextModule,
+      FloatLabelModule,
+      InputTextareaModule,
+      RouterLink,
+      ObjectsListComponent,
+      TableTemplateComponent
     ]
 })
 
@@ -50,18 +50,20 @@ export class SubmitRequestComponent implements OnInit{
     });
   }
 
-  submitRequest() {
-    const requestload: RequestModel = {
-      ...this.request,
-      objectId: this.request.objectId
-    };
+  submitRequest(requestForm: NgForm) {
+    if (requestForm.valid) {
+      const requestload: RequestModel = {
+        ...this.request,
+        objectId: this.request.objectId
+      };
 
-    this.baseService.submitRequest(requestload).subscribe(response => {
-      this.requestLink = this.router.createUrlTree(['/request-status', response.id]).toString();
-      console.log('Request submitted successfully', response);
-    }, error => {
-      console.error('Error submitting request', error);
-    });
+      this.baseService.submitRequest(requestload).subscribe(response => {
+        this.requestLink = this.router.createUrlTree(['/request-status', response.id]).toString();
+        console.log('Request submitted successfully', response);
+      }, error => {
+        console.error('Error submitting request', error);
+      });
+    }
   }
 
   selectedObject(id: string): void {

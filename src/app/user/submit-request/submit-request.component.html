@@ -1,32 +1,39 @@
 <div class="card">
-  <form (ngSubmit)="submitRequest()" #requestForm="ngForm">
-    <div class="flex flex-column h-full w-4/5 align-items-center">
-      <h2>Submit a Request</h2>
-      <div class="flex flex-column field">
-        <div class="p-fluid">
-          <label for="title" class="font-semibold w-6rem">Title</label>
-          <input pInputText name="title" [(ngModel)]="request.title" required class="input-field"/>
-          <label for="description" >Description</label>
-          <textarea pInputTextarea name="description" required class="input-field"
-              [(ngModel)]="request.description"
-              [autoResize]="true">
-          </textarea>
-          <label>Email</label>
-          <input type="email" pInputText [(ngModel)]="request.email" name="email" required class="input-field"/>
-        </div>
-        <div>
-          <label for="object">Object</label>
-          <app-table-template [objects]="objects" [isSelect]="true" (objectSelected)="selectedObject($event)">
-          </app-table-template>
-        </div>
+  <form (ngSubmit)="submitRequest(requestForm)" #requestForm="ngForm" class="flex flex-column h-full w-4/5 align-items-center">
+    <h2>Submit a Request</h2>
+    <div class="flex flex-column">
+      <label for="title" class="font-semibold w-6rem">Title</label>
+      <input pInputText name="title" [(ngModel)]="request.title" #title="ngModel" required minlength="3" class="input-field"/>
+      <div *ngIf="title.invalid && (title.dirty || title.touched)" class="error">
+        <div *ngIf="title.errors?.['required']">Title is required.</div>
+        <div *ngIf="title.errors?.['minlength']">Title must be at least 3 characters long.</div>
       </div>
-      <div class="p-field">
-        <p-button label="Submit" type="submit"></p-button>
+
+      <label for="description" class="descriptionLabel">Description</label>
+      <textarea pInputTextarea name="description" [(ngModel)]="request.description" #description="ngModel" required minlength="3" [autoResize]="true" class="input-field"></textarea>
+      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="error">
+        <div *ngIf="description.errors?.['required']">Description is required.</div>
+        <div *ngIf="description.errors?.['minlength']">Description must be at least 3 characters long.</div>
       </div>
+
+      <label for="email">Email</label>
+      <input type="email" pInputText name="email" [(ngModel)]="request.email" #email="ngModel" required email class="input-field"/>
+      <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
+        <div *ngIf="email.errors?.['required']">Email is required.</div>
+        <div *ngIf="email.errors?.['email']">Invalid email format.</div>
+      </div>
+
+      <label for="object">Object</label>
+      <app-table-template [objects]="objects" [isSelect]="true" (objectSelected)="selectedObject($event)"></app-table-template>
+    </div>
+
+    <div class="button-container">
+      <button pButton label="Submit" type="submit" [disabled]="requestForm.invalid"></button>
     </div>
   </form>
+
   <div *ngIf="requestLink">
     <p>Request submitted successfully. You can check the status of your request</p>
-    <p-button label="Cheak request status" severity="secondary" [routerLink]="requestLink"></p-button>
+    <button pButton label="Check request status" severity="secondary" [routerLink]="requestLink"></button>
   </div>
 </div>

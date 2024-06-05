@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { TableModule } from 'primeng/table';
 import { PaginatorModule } from 'primeng/paginator';
@@ -8,6 +8,7 @@ import { RequestModel } from '../../models/request-model';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { Column } from '../../models/shared-models';
+
 
 @Component({
   selector: 'app-requests-list',
@@ -20,7 +21,7 @@ import { Column } from '../../models/shared-models';
 })
 
 
-export class RequestsListComponent {
+export class RequestsListComponent implements OnInit{
   requests!: RequestModel[];
   statusOptions!: { label: string, value: string }[];
 

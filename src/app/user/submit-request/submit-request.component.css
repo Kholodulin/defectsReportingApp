@@ -1,1 +1,3 @@
-
+:host ::ng-deep .descriptionLabel{
+  margin-top: 5px;
+}

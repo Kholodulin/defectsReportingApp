@@ -30,8 +30,9 @@ import { TableTemplateComponent } from "../../components/table-template/table-te
 export class ObjectsListComponent {
   objects!: ObjectModel[];
   addDialogvisible: boolean = false;
-  editDialogvisible: boolean = false;
+  editDialogVisible: boolean = false;
   editingObject: ObjectModel = new ObjectModel();
+  showValidationErrors: boolean = false;
 
   constructor(private baseService: BaseService) {}
 
@@ -44,8 +45,9 @@ export class ObjectsListComponent {
   editObject(id: string): void {
     this.baseService.findObjectById(id).subscribe((object: ObjectModel) =>{
       this.editingObject = object;
+      this.editingObject.registrationDate = new Date(this.editingObject.registrationDate);
+      this.editDialogVisible = true;
     });
-    this.editDialogvisible = true;
   }
 
   deleteObject(id: string): void {
@@ -60,18 +62,27 @@ export class ObjectsListComponent {
   }
 
   onSaveNewObjectClick(){
-    this.editingObject.id = "10"
+    this.showValidationErrors = true;
+    if (!this.editingObject.name || !this.editingObject.registrationDate || !this.editingObject.address) {
+      return;
+    }
+
     this.baseService.addNewObject(this.editingObject).subscribe(() => {
       this.baseService.getAllObjects().subscribe(data => this.objects = data);
     });
     this.addDialogvisible = false;
   }
   onSaveChangesClick() {
+    this.showValidationErrors = true;
+    if (!this.editingObject.name || !this.editingObject.registrationDate || !this.editingObject.address) {
+      return;
+    }
+
     let id = this.editingObject.id;
     this.baseService.updateObject(id, this.editingObject).subscribe(updatedObject => {
       this.baseService.getAllObjects().subscribe(data => this.objects = data);
       console.log("Object updated successfully", updatedObject);
-      this.editDialogvisible = false;
+      this.editDialogVisible = false;
     }, error => {
       console.error("Error updating object", error);
     });

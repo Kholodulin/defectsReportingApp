@@ -8,6 +8,7 @@ import { InputTextModule } from 'primeng/inputtext';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
+import { DatePipe } from '@angular/common';
 
 @Component({
   selector: 'app-table-template',
@@ -19,7 +20,8 @@ import { TableModule } from 'primeng/table';
     PaginatorModule,
     InputTextModule,
     FormsModule,
-    InputTextareaModule
+    InputTextareaModule,
+    DatePipe
   ],
   templateUrl: './table-template.component.html',
   styleUrl: './table-template.component.css'
