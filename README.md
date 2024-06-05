@@ -1,27 +1,40 @@
 # DefectReportingApp
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 17.3.7.
+Angular application for managing requests for eliminating construction defects. 
+The application has two roles: a construction company manager and a user submitting a request.
 
-## Development server
+## Installation and Setup
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+Requirements
 
-## Code scaffolding
+1. Node.js and npm
+2. Angular 17 CLI (npm install -g @angular/cli)
+3. JSON Server (npm install -g json-server)
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Instructions
 
-## Build
+1. Clone the repository:
+    ```sh
+    git clone https://github.com/Kholodulin/defectsReportingApp.git
+    cd construction-defect-management
+    ```
+2. Install the dependencies:
+   ```sh
+    npm install
+    ```
+3. Start JSON Server:
+   ```sh
+    json-server --watch db.json
+    ```
+4. Start the Angular application:
+    ```sh
+    ng serve
+    ```
+5. Open your browser and navigate to http://localhost:4200
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+## Technologies Used
 
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+1. Angular
+2. TypeScript
+3. JSON Server
+4. HTML/CSS
