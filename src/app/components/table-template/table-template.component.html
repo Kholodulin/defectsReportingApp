@@ -22,7 +22,7 @@
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <td *ngFor="let col of columns">{{ rowData[col.field] }}</td>
-        <td width="5%">
+        <td p-d-flex p-ai-center p-jc-start width="10%">
           <p-button *ngIf="isSelect" (onClick)="selectObject(rowData.id)" label="Select"></p-button>
           <p-button *ngIf="isEdit" (onClick)="editObject(rowData.id)" icon="pi pi-pencil" severity="danger"></p-button>
           <p-button *ngIf="isEdit" (onClick)="deleteObject(rowData.id)" icon="pi pi-trash" severity="danger"></p-button>

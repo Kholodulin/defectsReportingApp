@@ -29,9 +29,9 @@ export class TableTemplateComponent {
   @Input() isEdit: boolean = false;
   @Input() objects!: ObjectModel[];
 
-  @Output() objectSelected = new EventEmitter<number>();
-  @Output() objectToEdit = new EventEmitter<number>();
-  @Output() objectToDelete = new EventEmitter<number>();
+  @Output() objectSelected = new EventEmitter<string>();
+  @Output() objectToEdit = new EventEmitter<string>();
+  @Output() objectToDelete = new EventEmitter<string>();
 
   cols: Column[] = [
     { field: 'name', header: 'name' },
@@ -41,14 +41,13 @@ export class TableTemplateComponent {
   ];
 
 
-  selectObject(id: number) {
+  selectObject(id: string) {
     this.objectSelected.emit(id);
   }
-  editObject(id: number) {
+  editObject(id: string) {
     this.objectToEdit.emit(id);
   }
-  deleteObject(id: number) {
+  deleteObject(id: string) {
     this.objectToDelete.emit(id);
   }
-
 }

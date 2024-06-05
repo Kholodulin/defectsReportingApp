@@ -1,19 +1,19 @@
 export class RequestModel {
-  id: number;
+  id: string;
   title: string;
   description: string;
   email: string;
   submissionDate: Date;
   status: 'Pending' | 'Rejected' | 'Completed';
-  objectId: number;
+  objectId: string | null;
 
   constructor(){
-    this.id = NaN;
+    this.id = '';
     this.title = '';
     this.description = '';
     this.email = '';
     this.submissionDate = new Date();
     this.status = 'Pending';
-    this.objectId = NaN;
+    this.objectId = null;
   }
 }

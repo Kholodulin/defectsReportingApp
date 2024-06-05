@@ -1,12 +1,12 @@
 export class ObjectModel {
-  id: number;
+  id: string;
   name: string;
   address: string;
   registrationDate: Date;
   requestsCount: number;
 
   constructor() {
-    this.id = 0;
+    this.id = '';
     this.name = '';
     this.address = '';
     this.registrationDate = new Date();

@@ -64,7 +64,7 @@ export class SubmitRequestComponent implements OnInit{
     });
   }
 
-  selectedObject(id: number): void {
+  selectedObject(id: string): void {
     this.request.objectId = id;
   }
 }

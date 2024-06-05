@@ -19,8 +19,7 @@ export class RequestStatusComponent implements OnInit{
   ngOnInit() {
     const requestId = this.route.snapshot.paramMap.get('id');
     if (requestId) {
-      const id = parseInt(requestId, 10);
-      this.baseService.findRequestById(id).subscribe(
+      this.baseService.findRequestById(requestId).subscribe(
         (request: RequestModel) => {
           this.request = request;
         },

@@ -1,6 +1,5 @@
 import { Component, EventEmitter, Input, Output, TemplateRef, ViewChild } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
-import { PaginatorModule } from 'primeng/paginator';
 import { CommonModule } from '@angular/common';
 import { ObjectModel } from '../../models/object-model';
 import { BaseService } from '../../services/base.service';
@@ -42,14 +41,14 @@ export class ObjectsListComponent {
     });
   }
 
-  editObject(id: number): void {
+  editObject(id: string): void {
     this.baseService.findObjectById(id).subscribe((object: ObjectModel) =>{
       this.editingObject = object;
     });
     this.editDialogvisible = true;
   }
 
-  deleteObject(id: number): void {
+  deleteObject(id: string): void {
     this.baseService.delObject(id).subscribe(() => {
       this.baseService.getAllObjects().subscribe(data => this.objects = data);
     });
@@ -61,7 +60,7 @@ export class ObjectsListComponent {
   }
 
   onSaveNewObjectClick(){
-    console.log(this.editingObject);
+    this.editingObject.id = "10"
     this.baseService.addNewObject(this.editingObject).subscribe(() => {
       this.baseService.getAllObjects().subscribe(data => this.objects = data);
     });

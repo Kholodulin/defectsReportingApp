@@ -8,6 +8,8 @@ import { environment } from '../../environments/environment';
 @Injectable({
   providedIn: 'root'
 })
+
+
 export class BaseService {
 
   private objectsUrl = `${environment.API_URL}/constructionObjects`;
@@ -29,30 +31,26 @@ export class BaseService {
     return this.http.post<RequestModel>(this.requestsUrl, req);
   }
 
-  delObject(id: number): Observable<any> {
+  delObject(id: string): Observable<any> {
     const url = `${this.objectsUrl}/${id}`;
     return this.http.delete(url);
   }
-  delRequest(id: number): Observable<any> {
-    const url = `${this.requestsUrl}/${id}`;
-    return this.http.delete(url);
-  }
 
-  updateObject(id: number, obj: ObjectModel): Observable<ObjectModel>{
+  updateObject(id: string, obj: ObjectModel): Observable<ObjectModel>{
     const url = `${this.objectsUrl}/${id}`;
     obj.id = id;
     return this.http.put<ObjectModel>(url, obj);
   }
-  updateRequest(id: number, req: RequestModel): Observable<RequestModel>{
+  updateRequest(id: string, req: RequestModel): Observable<RequestModel>{
     const url = `${this.requestsUrl}/${id}`;
     req.id = id;
     return this.http.put<RequestModel>(url, req);
   }
 
-  findObjectById(id: number): Observable<ObjectModel>{
+  findObjectById(id: string): Observable<ObjectModel>{
     return this.http.get<ObjectModel>(`${this.objectsUrl}/${id}`);
   }
-  findRequestById(id: number): Observable<RequestModel>{
+  findRequestById(id: string): Observable<RequestModel>{
     return this.http.get<RequestModel>(`${this.requestsUrl}/${id}`);
   }
 }

@@ -45,12 +45,6 @@ export class RequestsListComponent {
     ];
   }
 
-  deleteRequest(id: number): void {
-    this.baseService.delRequest(id).subscribe(() => {
-      this.baseService.getAllRequests().subscribe(data => this.requests = data);
-    });
-  }
-
   onDropdownChange(event: any, request: RequestModel) {
     const newStatus = event.value;
     console.log(event, request);
