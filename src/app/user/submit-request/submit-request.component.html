@@ -33,7 +33,6 @@
   </form>
 
   <div *ngIf="requestLink">
-    <p>Request submitted successfully. You can check the status of your request</p>
-    <button pButton label="Check request status" severity="secondary" [routerLink]="requestLink"></button>
+    <p>Request submitted successfully. You can <a [routerLink]="requestLink">check the status of your request</a></p>
   </div>
 </div>

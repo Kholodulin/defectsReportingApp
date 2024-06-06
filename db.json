@@ -23,7 +23,7 @@
     },
     {
       "id": "4",
-      "name": "Building B2",
+      "name": "Building B copy",
       "address": "456 Elm St",
       "registrationDate": "2023-02-01T00:00:00.000Z",
       "requestsCount": 1
@@ -72,7 +72,7 @@
       "description": "A window in Building A is broken",
       "email": "user2@example.com",
       "submissionDate": "2024-01-02T12:00:00.000Z",
-      "status": "Completed",
+      "status": "Pending",
       "objectId": 1
     },
     {
@@ -83,6 +83,32 @@
       "submissionDate": "2024-01-03T12:00:00.000Z",
       "status": "Pending",
       "objectId": 2
+    }
+  ],
+  "users": [
+    {
+      "id": "1",
+      "fullName": "test user",
+      "email": "test1@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "2",
+      "fullName": "test Data",
+      "email": "test@gmail.com",
+      "password": "1234"
+    },
+    {
+      "id": "d868",
+      "fullName": "testdfg",
+      "email": "tst@m",
+      "password": "123"
+    },
+    {
+      "id": "74a1",
+      "fullName": "anotherTest",
+      "email": "new@mail",
+      "password": "newPass"
     }
   ]
 }

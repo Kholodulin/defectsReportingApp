@@ -5,15 +5,17 @@ import { routes } from './app.routes';
 import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
     importProvidersFrom([
-     BrowserAnimationsModule,
-     BrowserModule
-   ]),
-   provideRouter(routes),
-   provideClientHydration(),
- ]
+      BrowserAnimationsModule,
+      BrowserModule
+    ]),
+    provideRouter(routes),
+    provideClientHydration(),
+    MessageService
+  ]
 };
