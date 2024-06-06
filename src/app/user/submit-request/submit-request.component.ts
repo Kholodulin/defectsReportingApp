@@ -16,6 +16,7 @@ import { TableTemplateComponent } from "../../components/table-template/table-te
 import { CardModule } from 'primeng/card';
 import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
+import { FileUploadComponent } from '../../components/file-upload/file-upload.component';
 
 @Component({
   selector: 'app-submit-request',
@@ -37,6 +38,7 @@ import { MessageService } from 'primeng/api';
     ReactiveFormsModule,
     ToastModule,
     InputTextareaModule,
+    FileUploadComponent
   ]
 })
 

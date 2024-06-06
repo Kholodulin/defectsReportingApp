@@ -1,4 +1,4 @@
-<form [formGroup]="requestForm" (ngSubmit)="submitRequest()">
+<form [formGroup]="requestForm" (ngSubmit)="submitRequest()" [style]="{ display: 'flex','justify-content': 'center'}">
   <p-card header="Submit a Request" [style]="{ display: 'flex','justify-content': 'center'}">
     <div class="field">
       <label for="title">Title</label>
@@ -66,7 +66,9 @@
         type="submit"
        ></p-button>
   </p-card>
+  <app-file-upload></app-file-upload>
 </form>
 <div *ngIf="requestLink">
   <p>Request submitted successfully. You can <a [routerLink]="requestLink">check the status of your request</a></p>
 </div>
+
