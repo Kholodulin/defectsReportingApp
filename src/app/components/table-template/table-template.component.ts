@@ -31,7 +31,7 @@ export class TableTemplateComponent {
   @Input() isEdit: boolean = false;
   @Input() objects!: ObjectModel[];
 
-  @Output() objectSelected = new EventEmitter<string>();
+  @Output() objectSelected = new EventEmitter<ObjectModel>();
   @Output() objectToEdit = new EventEmitter<string>();
   @Output() objectToDelete = new EventEmitter<string>();
 
@@ -43,8 +43,8 @@ export class TableTemplateComponent {
   ];
 
 
-  selectObject(id: string) {
-    this.objectSelected.emit(id);
+  selectObject(obj: ObjectModel) {
+    this.objectSelected.emit(obj);
   }
   editObject(id: string) {
     this.objectToEdit.emit(id);

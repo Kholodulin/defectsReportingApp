@@ -71,6 +71,15 @@
           <div *ngIf="!editingObject.name && showValidationErrors" class="p-error">Object name is required.</div>
         </div>
         <div class="field">
+          <label for="address" class="font-semibold w-8rem">Address</label>
+          <textarea pInputTextarea id="address" required class="w-full"
+            [(ngModel)]="editingObject.address"
+            [autoResize]="true"
+            rows="3">
+          </textarea>
+          <div *ngIf="!editingObject.address && showValidationErrors" class="p-error">Address is required.</div>
+        </div>
+        <div class="field">
           <label for="registrationDate" class="font-semibold w-8rem">Registration date</label>
           <p-calendar
             [(ngModel)]="editingObject.registrationDate"
@@ -81,15 +90,6 @@
             class="w-full">
           </p-calendar>
           <div *ngIf="!editingObject.registrationDate && showValidationErrors" class="p-error">Registration date is required.</div>
-        </div>
-        <div class="field">
-          <label for="address" class="font-semibold w-8rem">Address</label>
-          <textarea pInputTextarea id="address" required class="w-full"
-            [(ngModel)]="editingObject.address"
-            [autoResize]="true"
-            rows="3">
-          </textarea>
-          <div *ngIf="!editingObject.address && showValidationErrors" class="p-error">Address is required.</div>
         </div>
         <div class="flex justify-content-end gap-2 mt-3">
           <p-button label="Save changes" severity="info" (click)="onSaveChangesClick()"></p-button>

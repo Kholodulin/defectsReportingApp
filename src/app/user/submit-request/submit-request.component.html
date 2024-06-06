@@ -1,38 +1,72 @@
-<div class="card">
-  <form (ngSubmit)="submitRequest(requestForm)" #requestForm="ngForm" class="flex flex-column h-full w-4/5 align-items-center">
-    <h2>Submit a Request</h2>
-    <div class="flex flex-column">
-      <label for="title" class="font-semibold w-6rem">Title</label>
-      <input pInputText name="title" [(ngModel)]="request.title" #title="ngModel" required minlength="3" class="input-field"/>
-      <div *ngIf="title.invalid && (title.dirty || title.touched)" class="error">
-        <div *ngIf="title.errors?.['required']">Title is required.</div>
-        <div *ngIf="title.errors?.['minlength']">Title must be at least 3 characters long.</div>
+<form [formGroup]="requestForm" (ngSubmit)="submitRequest()">
+  <p-card header="Submit a Request" [style]="{ display: 'flex','justify-content': 'center'}">
+    <div class="field">
+      <label for="title">Title</label>
+      <input
+        type="text"
+        pInputText
+        formControlName="title"
+        name="title"
+        class="w-full"
+      />
+      <small
+        *ngIf="title.invalid && (title.dirty || title.touched)"
+        class="block p-error"
+        >
+        <div *ngIf="title.errors?.['required']">Title is required</div>
+      </small>
       </div>
-
-      <label for="description" class="descriptionLabel">Description</label>
-      <textarea pInputTextarea name="description" [(ngModel)]="request.description" #description="ngModel" required minlength="3" [autoResize]="true" class="input-field"></textarea>
-      <div *ngIf="description.invalid && (description.dirty || description.touched)" class="error">
+      <div class="field">
+        <label for="description">Description</label>
+        <textarea
+          formControlName="description"
+          name="description"
+          class="w-full"
+          [autoResize]="true"
+          rows="2"
+          pInputTextarea
+        ></textarea>
+        <small
+          *ngIf="description.invalid && (description.dirty || description.touched)"
+          class="block p-error"
+        >
         <div *ngIf="description.errors?.['required']">Description is required.</div>
-        <div *ngIf="description.errors?.['minlength']">Description must be at least 3 characters long.</div>
+      </small>
       </div>
-
-      <label for="email">Email</label>
-      <input type="email" pInputText name="email" [(ngModel)]="request.email" #email="ngModel" required email class="input-field"/>
-      <div *ngIf="email.invalid && (email.dirty || email.touched)" class="error">
-        <div *ngIf="email.errors?.['required']">Email is required.</div>
-        <div *ngIf="email.errors?.['email']">Invalid email format.</div>
+      <div class="field">
+        <label for="email">Email</label>
+        <input
+          type="text"
+          pInputText
+          formControlName="email"
+          class="w-full"
+          name="email"
+          placeholder="Type your email"
+        />
+        <small
+          *ngIf="email.invalid && (email.dirty || email.touched)"
+          class="block p-error"
+        >
+          <div *ngIf="email.errors?.['required']">Email is required.</div>
+          <div *ngIf="email.errors?.['email']">Email should be valid</div>
+        </small>
       </div>
-
       <label for="object">Object</label>
-      <app-table-template [objects]="objects" [isSelect]="true" (objectSelected)="selectedObject($event)"></app-table-template>
-    </div>
-
-    <div class="button-container">
-      <button pButton label="Submit" type="submit" [disabled]="requestForm.invalid"></button>
-    </div>
-  </form>
-
-  <div *ngIf="requestLink">
-    <p>Request submitted successfully. You can <a [routerLink]="requestLink">check the status of your request</a></p>
-  </div>
+      <button type="button" (click)="toggleTableVisibility()">
+        {{ isTableVisible ? 'Hide Object Selection' : 'Select Object' }}
+      </button>
+      <label for="objectShow">{{ object.name || '' }}</label>
+      <div *ngIf="isTableVisible">
+        <app-table-template [objects]="objects" [isSelect]="true" (objectSelected)="selectedObject($event)"></app-table-template>
+      </div>
+      <p-button
+        label="Submit"
+        styleClass="w-full"
+        [disabled]="requestForm.invalid"
+        type="submit"
+       ></p-button>
+  </p-card>
+</form>
+<div *ngIf="requestLink">
+  <p>Request submitted successfully. You can <a [routerLink]="requestLink">check the status of your request</a></p>
 </div>

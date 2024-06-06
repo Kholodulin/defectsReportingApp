@@ -26,7 +26,7 @@
           <span *ngIf="col.field === 'registrationDate'">{{ rowData[col.field] | date:'dd-MM-yyyy' }}</span>
         </td>
         <td width="5%">
-          <p-button *ngIf="isSelect" (onClick)="selectObject(rowData.id)" label="Select"></p-button>
+          <p-button *ngIf="isSelect" (onClick)="selectObject(rowData)" label="Select"></p-button>
           <p-button *ngIf="isEdit" (onClick)="editObject(rowData.id)" icon="pi pi-pencil" severity="warning"></p-button>
           <p-button *ngIf="isEdit" (onClick)="deleteObject(rowData.id)" icon="pi pi-trash" severity="danger"></p-button>
         </td>

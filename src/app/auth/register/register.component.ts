@@ -29,9 +29,8 @@ import { CommonModule } from '@angular/common';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
-
-
 export class RegisterComponent {
+  user !: User;
   registerForm = this.fb.group({
     fullName: ['', [Validators.required, Validators.pattern(/^[\p{L}][\p{L} .'-]*[\p{L}.]$/u
   )]],
@@ -66,17 +65,19 @@ export class RegisterComponent {
   }
 
   submitDetails() {
-    const postData = { ...this.registerForm.value };
-    delete postData.confirmPassword;
-    this.authService.registerUser(postData as User).subscribe(
-      response => {
-        console.log(response);
-        this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Register successfully' });
-        this.router.navigate(['login'])
-      },
-      error => {
-        this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
-      }
-    )
+    if(this.registerForm.valid){
+      const postData = { ...this.registerForm.value };
+      delete postData.confirmPassword;
+      this.authService.registerUser(postData as User).subscribe(
+        response => {
+          console.log(response);
+          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Register successfully' });
+          this.router.navigate(['login'])
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+        }
+      )
+    }
   }
 }
