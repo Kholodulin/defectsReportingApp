@@ -6,9 +6,10 @@ import { BaseService } from '../../services/base.service';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
-import { FormsModule } from '@angular/forms';
+import { FormBuilder, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TableTemplateComponent } from "../../components/table-template/table-template.component";
+import { CardModule } from 'primeng/card';
 
 @Component({
     selector: 'app-objects-list',
@@ -16,14 +17,16 @@ import { TableTemplateComponent } from "../../components/table-template/table-te
     templateUrl: './objects-list.component.html',
     styleUrl: './objects-list.component.css',
     imports: [
-        CommonModule,
-        ButtonModule,
-        DialogModule,
-        InputTextModule,
-        FormsModule,
-        CalendarModule,
-        InputTextareaModule,
-        TableTemplateComponent
+      CommonModule,
+      ButtonModule,
+      DialogModule,
+      InputTextModule,
+      FormsModule,
+      CalendarModule,
+      InputTextareaModule,
+      TableTemplateComponent,
+      ReactiveFormsModule,
+      CardModule,
     ]
 })
 
@@ -34,12 +37,23 @@ export class ObjectsListComponent {
   editingObject: ObjectModel = new ObjectModel();
   showValidationErrors: boolean = false;
 
-  constructor(private baseService: BaseService) {}
+  addForm = this.fb.group({
+    name: ['', [Validators.required]],
+    registrationDate: [new Date()],
+    address: [''],
+    requestsCount:[0]
+  });
+
+  constructor(private baseService: BaseService, private fb: FormBuilder) {}
 
   ngOnInit() {
     this.baseService.getAllObjects().subscribe(data => {
         this.objects = data;
     });
+  }
+
+  get objectName() {
+    return this.addForm.controls['name'];
   }
 
   editObject(id: string): void {
@@ -61,17 +75,18 @@ export class ObjectsListComponent {
     this.addDialogvisible = true;
   }
 
-  onSaveNewObjectClick(){
-    this.showValidationErrors = true;
-    if (!this.editingObject.name || !this.editingObject.registrationDate || !this.editingObject.address) {
-      return;
+  addNewObject(){
+    if (this.addForm.valid) {
+      const postData = { ...this.addForm.value, requestsCount:0 };
+      this.baseService.addNewObject(postData as ObjectModel).subscribe(
+        response => {
+          this.baseService.getAllObjects().subscribe(data => this.objects = data);
+          this.addDialogvisible = false;
+        }
+      )
     }
-
-    this.baseService.addNewObject(this.editingObject).subscribe(() => {
-      this.baseService.getAllObjects().subscribe(data => this.objects = data);
-    });
-    this.addDialogvisible = false;
   }
+
   onSaveChangesClick() {
     this.showValidationErrors = true;
     if (!this.editingObject.name || !this.editingObject.registrationDate || !this.editingObject.address) {

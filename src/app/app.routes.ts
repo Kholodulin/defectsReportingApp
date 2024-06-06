@@ -9,8 +9,8 @@ import { RegisterComponent } from './auth/register/register.component';
 import { authGuard } from './auth/guard.guard';
 
 export const routes: Routes = [
-  { path: 'requests', title: 'Requests', component: RequestsListComponent, canActivate: [authGuard] },
-  { path: 'objects', title: 'Objects', component: ObjectsListComponent, canActivate: [authGuard] },
+  { path: 'requests', title: 'Requests', component: RequestsListComponent/*, canActivate: [authGuard]*/ },
+  { path: 'objects', title: 'Objects', component: ObjectsListComponent/*, canActivate: [authGuard]*/ },
   { path: 'submit-request', title: 'Submit-request', component: SubmitRequestComponent },
   { path: 'request-status/:id', title: 'Request Status', component: RequestStatusComponent},
   { path: 'login', title: 'Login', component: LoginComponent },

@@ -1,14 +1,16 @@
 
-:host ::ng-deep .p-menubar {
+::ng-deep .p-menubar {
   border: 1px green;
   border-style: solid;
   border-radius: 20px;
   box-shadow: 0px 4px 6px 0px green;
   background-color: #e3f2a8;
+  max-height: 70px;
 }
 
-:host ::ng-deep .p-menuitem {
+::ng-deep .p-menuitem {
   background-color: rgb(131, 222, 56);
   margin: 12px;
   border-radius: 10px;
+  max-height: 50px;
 }

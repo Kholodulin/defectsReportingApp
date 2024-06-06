@@ -29,8 +29,9 @@ import { CommonModule } from '@angular/common';
   templateUrl: './register.component.html',
   styleUrl: './register.component.css'
 })
+
+
 export class RegisterComponent {
-  user !: User;
   registerForm = this.fb.group({
     fullName: ['', [Validators.required, Validators.pattern(/^[\p{L}][\p{L} .'-]*[\p{L}.]$/u
   )]],
@@ -78,5 +79,4 @@ export class RegisterComponent {
       }
     )
   }
-
 }

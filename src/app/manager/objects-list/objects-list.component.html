@@ -3,77 +3,99 @@
   </app-table-template>
 
   <p-button (click)="showAddDialog()" label="Add new object"></p-button>
-  <p-dialog header="Add new object" [modal]="true" [(visible)]="addDialogvisible" [style]="{ width: '30rem', height: '36rem' }">
-    <div class="p-dialog-content flex flex-column h-full">
-      <span class="p-text-secondary block mb-5">Fill in information.</span>
-      <div class="flex flex-column">
-        <div class="flex align-items-center gap-3 mb-3">
-          <label for="name" class="font-semibold w-6rem">Object name</label>
-          <input pInputText id="name" [(ngModel)]="editingObject.name" autocomplete="off" />
-          <div *ngIf="!editingObject.name && showValidationErrors" class="error">Object name is required.</div>
+  <p-dialog header="Adding object" [modal]="true" [(visible)]="addDialogvisible" [style]="{ width: '30rem', height: '36rem', 'min-width': '24rem',  'min-height': '20rem' }">
+    <form [formGroup]="addForm" (ngSubmit)="addNewObject()">
+      <p-card>
+        <div class="field">
+          <label for="name">Object name</label>
+          <input
+            type="text"
+            pInputText
+            formControlName="name"
+            class="w-full"
+            name="name"
+            placeholder="Type object name"
+          />
+          <small
+            *ngIf="objectName.invalid && (objectName.dirty || objectName.touched)"
+            class="block p-error"
+          >
+            <div *ngIf="objectName.errors?.['required']">Name is required.</div>
+          </small>
         </div>
-        <div class="flex align-items-center mb-5">
-          <label for="registrationDate" class="font-semibold w-8rem ">Registration date</label>
+        <div class="field">
+          <label for="address">Object address</label>
+          <textarea
+            pInputTextarea
+            formControlName="address"
+            class="w-full"
+            name="address"
+            [autoResize]="true"
+            rows="2"
+          ></textarea>
+        </div>
+        <div class="field">
+          <label for="registrationDate" class="font-semibold w-8rem multiline-label">Registration date</label>
+          <p-calendar
+            formControlName="registrationDate"
+            name="registrationDate"
+            [showIcon]="true"
+            inputId="buttondisplay"
+            [showOnFocus]="false"
+            appendTo="body"
+            class="w-full">
+          </p-calendar>
+        </div>
+        <div class="flex justify-content-end gap-2 mt-3">
+          <p-button class="mr-2"
+            label="Add object"
+            [disabled]="addForm.invalid"
+            type="submit"
+          ></p-button>
+          <p-button
+            label="Cancel"
+            severity="danger"
+            (click)="addDialogvisible = false"
+          ></p-button>
+        </div>
+      </p-card>
+    </form>
+  </p-dialog>
+
+  <p-dialog header="Editing object" [modal]="true" [(visible)]="editDialogVisible" [style]="{ width: '30rem', height: '36rem', 'min-width': '24rem',  'min-height': '20rem'}">
+    <div class="p-dialog-content flex flex-column h-full">
+      <p-card>
+        <div class="field">
+          <label for="name" class="font-semibold w-8rem">Object name</label>
+          <input pInputText id="name" [(ngModel)]="editingObject.name" autocomplete="off" class="w-full"/>
+          <div *ngIf="!editingObject.name && showValidationErrors" class="p-error">Object name is required.</div>
+        </div>
+        <div class="field">
+          <label for="registrationDate" class="font-semibold w-8rem">Registration date</label>
           <p-calendar
             [(ngModel)]="editingObject.registrationDate"
             [showIcon]="true"
             inputId="buttondisplay"
             [showOnFocus]="false"
             appendTo="body"
-            class="custom-calendar">
+            class="w-full">
           </p-calendar>
-          <div *ngIf="!editingObject.registrationDate && showValidationErrors" class="error">Registration date is required.</div>
+          <div *ngIf="!editingObject.registrationDate && showValidationErrors" class="p-error">Registration date is required.</div>
         </div>
-        <div class="flex align-items-center gap-3 mb-5">
-          <label for="address" class="font-semibold w-6rem">Address</label>
-          <textarea pInputTextarea id="address" required class="input-field"
+        <div class="field">
+          <label for="address" class="font-semibold w-8rem">Address</label>
+          <textarea pInputTextarea id="address" required class="w-full"
             [(ngModel)]="editingObject.address"
             [autoResize]="true"
             rows="3">
           </textarea>
+          <div *ngIf="!editingObject.address && showValidationErrors" class="p-error">Address is required.</div>
         </div>
-      </div>
-      <div class="flex justify-content-end gap-2 mt-auto">
-        <p-button label="Cancel" severity="secondary" (click)="addDialogvisible = false"></p-button>
-        <p-button label="Save new object" severity="info" (click)="onSaveNewObjectClick()"></p-button>
-      </div>
-    </div>
-  </p-dialog>
-  <p-dialog header="Editing object" [modal]="true" [(visible)]="editDialogVisible" [style]="{ width: '30rem', height: '36rem' }">
-    <div class="p-dialog-content flex flex-column h-full">
-        <span class="p-text-secondary block mb-5">Сhange data.</span>
-        <div class="flex flex-column">
-          <div class="flex align-items-center gap-3 mb-3">
-            <label for="name" class="font-semibold w-6rem">Object name</label>
-            <input pInputText id="name" [(ngModel)]="editingObject.name" autocomplete="off"  />
-            <div *ngIf="!editingObject.name && showValidationErrors" class="error">Object name is required.</div>
-          </div>
-          <div class="flex align-items-center mb-5">
-            <label for="registrationDate" class="font-semibold w-8rem ">Registration date</label>
-            <p-calendar
-              [(ngModel)]="editingObject.registrationDate"
-              [showIcon]="true"
-              inputId="buttondisplay"
-              [showOnFocus]="false"
-              appendTo="body"
-              class="custom-calendar">
-            </p-calendar>
-            <div *ngIf="!editingObject.registrationDate && showValidationErrors" class="error">Registration date is required.</div>
-          </div>
-          <div class="flex align-items-center gap-3 mb-5">
-            <label for="address" class="font-semibold w-6rem">Address</label>
-            <textarea pInputTextarea id="address" required class="input-field"
-              [(ngModel)]="editingObject.address"
-              [autoResize]="true"
-              rows="3">
-            </textarea>
-            <div *ngIf="!editingObject.address && showValidationErrors" class="error">Address is required.</div>
-          </div>
+        <div class="flex justify-content-end gap-2 mt-3">
+          <p-button label="Save changes" severity="info" (click)="onSaveChangesClick()"></p-button>
+          <p-button label="Cancel" severity="danger" (click)="editDialogVisible = false"></p-button>
         </div>
-      <div class="flex justify-content-end gap-2 mt-auto">
-        <p-button label="Cancel" severity="secondary" (click)="editDialogVisible = false"></p-button>
-        <p-button label="Save changes" severity="info" (click)="onSaveChangesClick()"></p-button>
-      </div>
+      </p-card>
     </div>
   </p-dialog>
 </div>
