@@ -1,6 +1,10 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
 data/
+.vscode
+.editorconfig
+tsconfig.spec.json
+
 
 # Compiled output
 /dist

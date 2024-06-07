@@ -18,14 +18,14 @@ export class BaseService {
   constructor(private http: HttpClient) { }
 
   getAllObjects(): Observable<ObjectModel[]> {
-    return this.http.get<ObjectModel[]>(this.objectsUrl);
+    return this.http.get<ObjectModel[]>(this.objectsUrl, {headers: {Authorization: `Bearer ${localStorage.getItem('accessToken')}`}});
   }
   getAllRequests(): Observable<RequestModel[]> {
-    return this.http.get<RequestModel[]>(this.requestsUrl);
+    return this.http.get<RequestModel[]>(this.requestsUrl, {headers: {Authorization: `Bearer ${localStorage.getItem('accessToken')}`}});
   }
 
   addNewObject(obj: ObjectModel): Observable<ObjectModel> {
-    return this.http.post<ObjectModel>(this.objectsUrl, obj);
+    return this.http.post<ObjectModel>(this.objectsUrl, obj, {headers: {Authorization: `Bearer ${localStorage.getItem('accessToken')}`}});
   }
   submitRequest(req: RequestModel): Observable<RequestModel> {
     return this.http.post<RequestModel>(this.requestsUrl, req);
@@ -33,18 +33,18 @@ export class BaseService {
 
   delObject(id: string): Observable<any> {
     const url = `${this.objectsUrl}/${id}`;
-    return this.http.delete(url);
+    return this.http.delete(url, {headers: {Authorization: `Bearer ${localStorage.getItem('accessToken')}`}});
   }
 
   updateObject(id: string, obj: ObjectModel): Observable<ObjectModel>{
     const url = `${this.objectsUrl}/${id}`;
     obj.id = id;
-    return this.http.put<ObjectModel>(url, obj);
+    return this.http.put<ObjectModel>(url, obj, {headers: {Authorization: `Bearer ${localStorage.getItem('accessToken')}`}});
   }
   updateRequest(id: string, req: RequestModel): Observable<RequestModel>{
     const url = `${this.requestsUrl}/${id}`;
     req.id = id;
-    return this.http.put<RequestModel>(url, req);
+    return this.http.put<RequestModel>(url, req, {headers: {Authorization: `Bearer ${localStorage.getItem('accessToken')}`}});
   }
 
   findObjectById(id: string): Observable<ObjectModel>{

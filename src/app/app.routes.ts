@@ -7,16 +7,14 @@ import { Routes } from '@angular/router';
 import { LoginComponent } from './auth/login/login.component';
 import { RegisterComponent } from './auth/register/register.component';
 import { authGuard } from './auth/guard.guard';
-import { FileUploadComponent } from './components/file-upload/file-upload.component';
 
 export const routes: Routes = [
-  { path: 'requests', title: 'Requests', component: RequestsListComponent/*, canActivate: [authGuard]*/ },
-  { path: 'objects', title: 'Objects', component: ObjectsListComponent/*, canActivate: [authGuard]*/ },
-  { path: 'submit-request', title: 'Submit-request', component: SubmitRequestComponent },
-  { path: 'request-status/:id', title: 'Request Status', component: RequestStatusComponent},
+  { path: 'requests', title: 'Requests', component: RequestsListComponent, canActivate: [authGuard] },
+  { path: 'objects', title: 'Objects', component: ObjectsListComponent, canActivate: [authGuard] },
+  { path: 'submit-request', title: 'Submit-request', component: SubmitRequestComponent, canActivate: [authGuard] },
+  { path: 'request-status/:id', title: 'Request Status', component: RequestStatusComponent, canActivate: [authGuard]},
   { path: 'login', title: 'Login', component: LoginComponent },
-  { path: 'upload', title: 'Upload', component: FileUploadComponent },
   { path: 'register', title: 'Register', component: RegisterComponent },
-  { path: '',   redirectTo: '/upload', pathMatch: 'full' },
+  { path: '',   redirectTo: '/requests', pathMatch: 'full' },
   { path: '**', component: PageNotFoundComponent },
 ];

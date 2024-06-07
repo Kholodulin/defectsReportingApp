@@ -65,19 +65,17 @@ export class RegisterComponent {
   }
 
   submitDetails() {
-    if(this.registerForm.valid){
+    if (this.registerForm.valid) {
       const postData = { ...this.registerForm.value };
       delete postData.confirmPassword;
       this.authService.registerUser(postData as User).subscribe(
         response => {
-          console.log(response);
-          this.messageService.add({ severity: 'success', summary: 'Success', detail: 'Register successfully' });
-          this.router.navigate(['login'])
+          this.router.navigate(['login']);
         },
         error => {
           this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
         }
-      )
+      );
     }
   }
 }

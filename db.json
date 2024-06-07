@@ -87,28 +87,10 @@
   ],
   "users": [
     {
-      "id": "1",
-      "fullName": "test user",
-      "email": "test1@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "2",
-      "fullName": "test Data",
-      "email": "test@gmail.com",
-      "password": "1234"
-    },
-    {
-      "id": "d868",
-      "fullName": "testdfg",
-      "email": "tst@m",
-      "password": "123"
-    },
-    {
-      "id": "74a1",
-      "fullName": "anotherTest",
-      "email": "new@mail",
-      "password": "newPass"
+      "email": "mail@mail.ru",
+      "password": "$2a$10$8A7mg5qBHn2H5uo2GFthF.s1RGnThxRqXVEpJii8rHAZl1wwlW80C",
+      "fullName": "name",
+      "id": 1
     }
   ]
 }

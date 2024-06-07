@@ -37,7 +37,7 @@ export class LoginComponent {
     private fb: FormBuilder,
     private authService: AuthService,
     private router: Router,
-    private msgService: MessageService
+    private messageService: MessageService
   ) { }
 
   get email() {
@@ -46,19 +46,24 @@ export class LoginComponent {
   get password() { return this.loginForm.controls['password']; }
 
   loginUser() {
-    const { email, password } = this.loginForm.value;
-    this.authService.getUserByEmail(email as string).subscribe(
-      response => {
-        if (response.length > 0 && response[0].password === password) {
-          sessionStorage.setItem('email', email as string);
-          this.router.navigate(['/submit-request']);
-        } else {
-          this.msgService.add({ severity: 'error', summary: 'Error', detail: 'email or password is wrong' });
+    if (this.loginForm.valid) {
+      const { email, password } = this.loginForm.value;
+      const credentials = { email: email as string, password: password as string };
+
+      this.authService.login(credentials).subscribe(
+        response => {
+          if (response.accessToken) {
+            localStorage.setItem('accessToken', response.accessToken);
+            this.router.navigate(['/submit-request']);
+          } else {
+            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Email or password is wrong' });
+          }
+        },
+        error => {
+          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
         }
-      },
-      error => {
-        this.msgService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
-      }
-    )
+      );
+    }
   }
 }
+

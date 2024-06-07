@@ -1,5 +1,5 @@
 import { NavbarComponent } from './components/navbar/navbar.component';
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component} from '@angular/core';
 import { RouterOutlet } from '@angular/router';
 import { ToastModule } from 'primeng/toast';
 
@@ -12,5 +12,4 @@ import { ToastModule } from 'primeng/toast';
 })
 export class AppComponent {
   title = 'defectReportingApp';
-  @ViewChild('objectListTemplate', { static: true }) objectListTemplate!: TemplateRef<any>;
 }

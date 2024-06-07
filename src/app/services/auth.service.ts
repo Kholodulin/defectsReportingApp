@@ -9,17 +9,15 @@ import { User } from '../auth/interfaces';
 })
 
 export class AuthService {
-
   private baseUrl = environment.API_URL;
-
 
   constructor(private http: HttpClient) { }
 
-  registerUser(userDetails: User) {
-    return this.http.post(`${this.baseUrl}/users`, userDetails);
+  registerUser(userDetails: User): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, userDetails);
   }
 
-  getUserByEmail(email: string): Observable<User[]> {
-    return this.http.get<User[]>(`${this.baseUrl}/users?email=${email}`);
+  login(credentials: { email: string, password: string }): Observable<any> {
+    return this.http.post(`${this.baseUrl}/login`, credentials);
   }
 }
