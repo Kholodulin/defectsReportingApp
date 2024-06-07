@@ -28,11 +28,12 @@ export class FileUploadService {
     });
   }
 
-  uploadFiles(files: File[]): Observable<any[]> {
+  uploadFiles(files: File[], fileNamePrefix: string = ''): Observable<any[]> {
     const uploadRequests = files.map(file => {
+      const fileName = fileNamePrefix ? `${fileNamePrefix}_${file.name}` : file.name;
       const command = new PutObjectCommand({
         Bucket: this.bucketName,
-        Key: file.name,
+        Key: fileName,
         Body: file,
         ContentType: file.type
       });

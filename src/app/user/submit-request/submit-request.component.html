@@ -12,45 +12,55 @@
       <small
         *ngIf="title.invalid && (title.dirty || title.touched)"
         class="block p-error"
-        >
+      >
         <div *ngIf="title.errors?.['required']">Title is required</div>
       </small>
-      </div>
-      <div class="field">
-        <label for="description">Description</label>
-        <textarea
-          formControlName="description"
-          name="description"
-          class="w-full"
-          [autoResize]="true"
-          rows="2"
-          pInputTextarea
-        ></textarea>
-        <small
-          *ngIf="description.invalid && (description.dirty || description.touched)"
-          class="block p-error"
-        >
+    </div>
+    <div class="field">
+      <label for="description">Description</label>
+      <textarea
+        formControlName="description"
+        name="description"
+        class="w-full"
+        [autoResize]="true"
+        rows="2"
+        pInputTextarea
+      ></textarea>
+      <small
+        *ngIf="description.invalid && (description.dirty || description.touched)"
+        class="block p-error"
+      >
         <div *ngIf="description.errors?.['required']">Description is required.</div>
       </small>
-      </div>
-      <div class="field">
-        <label for="email">Email</label>
-        <input
-          type="text"
-          pInputText
-          formControlName="email"
-          class="w-full"
-          name="email"
-          placeholder="Type your email"
-        />
-        <small
-          *ngIf="email.invalid && (email.dirty || email.touched)"
-          class="block p-error"
-        >
-          <div *ngIf="email.errors?.['required']">Email is required.</div>
-          <div *ngIf="email.errors?.['email']">Email should be valid</div>
-        </small>
-      </div>
+    </div>
+    <div class="field">
+      <label for="email">Email</label>
+      <input
+        type="text"
+        pInputText
+        formControlName="email"
+        class="w-full"
+        name="email"
+        placeholder="Type your email"
+      />
+      <small
+        *ngIf="email.invalid && (email.dirty || email.touched)"
+        class="block p-error"
+      >
+        <div *ngIf="email.errors?.['required']">Email is required.</div>
+        <div *ngIf="email.errors?.['email']">Email should be valid</div>
+      </small>
+    </div>
+    <div class="field">
+      <label for="files">Attachments</label>
+      <input
+        type="file"
+        (change)="onFileSelected($event)"
+        multiple
+        maxFileSize="2000000"
+      />
+    </div>
+    <div class="field">
       <label for="object">Object</label>
       <button type="button" (click)="toggleTableVisibility()">
         {{ isTableVisible ? 'Hide Object Selection' : 'Select Object' }}
@@ -59,16 +69,15 @@
       <div *ngIf="isTableVisible">
         <app-table-template [objects]="objects" [isSelect]="true" (objectSelected)="selectedObject($event)"></app-table-template>
       </div>
-      <p-button
-        label="Submit"
-        styleClass="w-full"
-        [disabled]="requestForm.invalid"
-        type="submit"
-       ></p-button>
+    </div>
+    <p-button
+      label="Submit"
+      styleClass="w-full"
+      [disabled]="requestForm.invalid"
+      type="submit"
+    ></p-button>
   </p-card>
-  <app-file-upload></app-file-upload>
 </form>
 <div *ngIf="requestLink">
   <p>Request submitted successfully. You can <a [routerLink]="requestLink">check the status of your request</a></p>
 </div>
-
