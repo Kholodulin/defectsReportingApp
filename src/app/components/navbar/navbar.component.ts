@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
 import { LoginComponent } from '../../auth/login/login.component';
-import { Button } from 'primeng/button';
 
 @Component({
   selector: 'app-navbar',

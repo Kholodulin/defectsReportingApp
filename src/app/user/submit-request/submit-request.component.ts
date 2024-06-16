@@ -12,10 +12,9 @@ import {
 } from '@angular/forms';
 import { RequestModel } from '../../models/request-model';
 import { ObjectModel } from '../../models/object-model';
-import { BaseService } from '../../services/base.service';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { ObjectsListComponent } from '../../manager/objects-list/objects-list.component';
 import { TableTemplateComponent } from '../../components/table-template/table-template.component';
 import { CardModule } from 'primeng/card';
@@ -23,6 +22,8 @@ import { ToastModule } from 'primeng/toast';
 import { MessageService } from 'primeng/api';
 import { FileUploadService } from '../../services/file-upload.service';
 import { v4 as uuidv4 } from 'uuid';
+import { RequestService } from '../../services/request.service';
+import { ObjectService } from './../../services/object.service';
 
 @Component({
   selector: 'app-submit-request',
@@ -61,14 +62,15 @@ export class SubmitRequestComponent implements OnInit {
   });
 
   constructor(
-    private baseService: BaseService,
+    private requestService: RequestService,
+    private objectService: ObjectService,
     private fb: FormBuilder,
     private messageService: MessageService,
     private fileUploadService: FileUploadService
   ) {}
 
   ngOnInit() {
-    this.baseService.getAllObjects().subscribe((data) => {
+    this.objectService.getAllObjects().subscribe((data) => {
       this.objects = data;
     });
   }
@@ -87,7 +89,7 @@ export class SubmitRequestComponent implements OnInit {
         status: 'Pending',
         attachedFilesId: uniqueId,
       };
-      this.baseService.submitRequest(postData as RequestModel).subscribe(
+      this.requestService.submitRequest(postData as RequestModel).subscribe(
         (response) => {
           this.fileUploadService
             .uploadFiles(this.selectedFiles, uniqueId)

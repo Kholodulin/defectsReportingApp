@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { RequestModel } from '../../models/request-model';
 import { ActivatedRoute } from '@angular/router';
-import { BaseService } from '../../services/base.service';
 import { CommonModule } from '@angular/common';
+import { RequestService } from '../../services/request.service';
 
 @Component({
   selector: 'app-request-status',
@@ -16,13 +16,13 @@ export class RequestStatusComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private baseService: BaseService
+    private requestService: RequestService
   ) {}
 
   ngOnInit() {
     const requestId = this.route.snapshot.paramMap.get('id');
     if (requestId) {
-      this.baseService.findRequestById(requestId).subscribe(
+      this.requestService.findRequestById(requestId).subscribe(
         (request: RequestModel) => {
           this.request = request;
         },

@@ -1,15 +1,7 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  Output,
-  TemplateRef,
-  ViewChild,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
 import { CommonModule } from '@angular/common';
 import { ObjectModel } from '../../models/object-model';
-import { BaseService } from '../../services/base.service';
 import { DialogModule } from 'primeng/dialog';
 import { InputTextModule } from 'primeng/inputtext';
 import { CalendarModule } from 'primeng/calendar';
@@ -22,6 +14,7 @@ import {
 import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TableTemplateComponent } from '../../components/table-template/table-template.component';
 import { CardModule } from 'primeng/card';
+import { ObjectService } from '../../services/object.service';
 
 @Component({
   selector: 'app-objects-list',
@@ -55,10 +48,10 @@ export class ObjectsListComponent {
     requestsCount: [0],
   });
 
-  constructor(private baseService: BaseService, private fb: FormBuilder) {}
+  constructor(private objectService: ObjectService, private fb: FormBuilder) {}
 
   ngOnInit() {
-    this.baseService.getAllObjects().subscribe((data) => {
+    this.objectService.getAllObjects().subscribe((data) => {
       this.objects = data;
     });
   }
@@ -68,7 +61,7 @@ export class ObjectsListComponent {
   }
 
   editObject(id: string): void {
-    this.baseService.findObjectById(id).subscribe((object: ObjectModel) => {
+    this.objectService.findObjectById(id).subscribe((object: ObjectModel) => {
       this.editingObject = object;
       this.editingObject.registrationDate = new Date(
         this.editingObject.registrationDate
@@ -78,8 +71,8 @@ export class ObjectsListComponent {
   }
 
   deleteObject(id: string): void {
-    this.baseService.delObject(id).subscribe(() => {
-      this.baseService
+    this.objectService.delObject(id).subscribe(() => {
+      this.objectService
         .getAllObjects()
         .subscribe((data) => (this.objects = data));
     });
@@ -93,10 +86,10 @@ export class ObjectsListComponent {
   addNewObject() {
     if (this.addForm.valid) {
       const postData = { ...this.addForm.value, requestsCount: 0 };
-      this.baseService
+      this.objectService
         .addNewObject(postData as ObjectModel)
         .subscribe((response) => {
-          this.baseService
+          this.objectService
             .getAllObjects()
             .subscribe((data) => (this.objects = data));
           this.addDialogvisible = false;
@@ -115,9 +108,9 @@ export class ObjectsListComponent {
     }
 
     let id = this.editingObject.id;
-    this.baseService.updateObject(id, this.editingObject).subscribe(
+    this.objectService.updateObject(id, this.editingObject).subscribe(
       (updatedObject) => {
-        this.baseService
+        this.objectService
           .getAllObjects()
           .subscribe((data) => (this.objects = data));
         console.log('Object updated successfully', updatedObject);

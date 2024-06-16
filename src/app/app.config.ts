@@ -6,13 +6,13 @@ import {
   BrowserModule,
   provideClientHydration,
 } from '@angular/platform-browser';
-import { provideHttpClient } from '@angular/common/http';
+import { provideHttpClient, withFetch } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideHttpClient(),
+    provideHttpClient(withFetch()),
     importProvidersFrom([BrowserAnimationsModule, BrowserModule]),
     provideRouter(routes),
     provideClientHydration(),
