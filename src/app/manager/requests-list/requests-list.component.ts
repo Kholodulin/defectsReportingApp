@@ -48,9 +48,7 @@ export class RequestsListComponent implements OnInit {
     ];
   }
 
-  onDropdownChange(event: any, request: RequestModel) {
-    const newStatus = event.value;
-    console.log(event, request);
+  onDropdownChange(request: RequestModel) {
     this.requestService.updateRequest(request.id, request).subscribe(
       (response) => {
         console.log('Status updated successfully', response);

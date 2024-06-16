@@ -21,7 +21,11 @@ export class RequestService {
   }
 
   submitRequest(req: RequestModel): Observable<RequestModel> {
-    return this.http.post<RequestModel>(this.requestsUrl, req);
+    return this.http.post<RequestModel>(this.requestsUrl, req, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    });
   }
 
   updateRequest(id: string, req: RequestModel): Observable<RequestModel> {

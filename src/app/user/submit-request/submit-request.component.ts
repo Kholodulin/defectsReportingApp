@@ -3,7 +3,7 @@ import { DropdownModule } from 'primeng/dropdown';
 import { ButtonModule } from 'primeng/button';
 import { InputTextModule } from 'primeng/inputtext';
 import { CommonModule } from '@angular/common';
-import { Component, OnInit } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import {
   FormBuilder,
   FormsModule,
@@ -48,6 +48,8 @@ import { ObjectService } from './../../services/object.service';
   ],
 })
 export class SubmitRequestComponent implements OnInit {
+  @ViewChild('fileInput') fileInput!: ElementRef;
+
   objects: ObjectModel[] = [];
   object: ObjectModel = new ObjectModel();
   requestLink!: string;
@@ -75,6 +77,16 @@ export class SubmitRequestComponent implements OnInit {
     });
   }
 
+  get title() {
+    return this.requestForm.controls['title'];
+  }
+  get description() {
+    return this.requestForm.controls['description'];
+  }
+  get email() {
+    return this.requestForm.controls['email'];
+  }
+
   onFileSelected(event: any) {
     this.selectedFiles = Array.from(event.target.files);
     console.log('selectedFiles', this.selectedFiles);
@@ -82,7 +94,7 @@ export class SubmitRequestComponent implements OnInit {
 
   submitRequest() {
     if (this.requestForm.valid) {
-      const uniqueId = uuidv4();
+      const uniqueId = this.selectedFiles.length > 0 ? uuidv4() : null;
       const postData = {
         ...this.requestForm.value,
         submissionDate: new Date(),
@@ -91,25 +103,29 @@ export class SubmitRequestComponent implements OnInit {
       };
       this.requestService.submitRequest(postData as RequestModel).subscribe(
         (response) => {
-          this.fileUploadService
-            .uploadFiles(this.selectedFiles, uniqueId)
-            .subscribe(
-              (response) => {
-                console.log('Form and files submitted successfully');
-              },
-              (error) => {
-                console.log('uploadFiles error', error);
-                this.messageService.add({
-                  severity: 'warning',
-                  detail: 'Unable to upload files',
-                });
-              }
-            );
+          if (uniqueId) {
+            this.fileUploadService
+              .uploadFiles(this.selectedFiles, uniqueId)
+              .subscribe(
+                (response) => {
+                  console.log('Form and files submitted successfully');
+                  this.selectedFiles.length = 0;
+                },
+                (error) => {
+                  console.log('uploadFiles error', error);
+                  this.messageService.add({
+                    severity: 'warning',
+                    detail: 'Unable to upload files',
+                  });
+                }
+              );
+          }
           this.messageService.add({
             severity: 'success',
             summary: 'Success',
             detail: 'Form submitted successfully',
           });
+          this.clearForm();
         },
         (error) => {
           this.messageService.add({
@@ -132,13 +148,13 @@ export class SubmitRequestComponent implements OnInit {
     this.isTableVisible = !this.isTableVisible;
   }
 
-  get title() {
-    return this.requestForm.controls['title'];
-  }
-  get description() {
-    return this.requestForm.controls['description'];
-  }
-  get email() {
-    return this.requestForm.controls['email'];
+  clearForm() {
+    this.requestForm.reset();
+    this.requestForm.patchValue({ objectId: null });
+    this.object = new ObjectModel();
+
+    if (this.fileInput) {
+      this.fileInput.nativeElement.value = '';
+    }
   }
 }
