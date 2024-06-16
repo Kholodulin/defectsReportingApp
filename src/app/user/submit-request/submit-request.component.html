@@ -1,5 +1,12 @@
-<form [formGroup]="requestForm" (ngSubmit)="submitRequest()" [style]="{ display: 'flex','justify-content': 'center'}">
-  <p-card header="Submit a Request" [style]="{ display: 'flex','justify-content': 'center'}">
+<form
+  [formGroup]="requestForm"
+  (ngSubmit)="submitRequest()"
+  [style]="{ display: 'flex', 'justify-content': 'center' }"
+>
+  <p-card
+    header="Submit a Request"
+    [style]="{ display: 'flex', 'justify-content': 'center' }"
+  >
     <div class="field">
       <label for="title">Title</label>
       <input
@@ -27,10 +34,14 @@
         pInputTextarea
       ></textarea>
       <small
-        *ngIf="description.invalid && (description.dirty || description.touched)"
+        *ngIf="
+          description.invalid && (description.dirty || description.touched)
+        "
         class="block p-error"
       >
-        <div *ngIf="description.errors?.['required']">Description is required.</div>
+        <div *ngIf="description.errors?.['required']">
+          Description is required.
+        </div>
       </small>
     </div>
     <div class="field">
@@ -63,11 +74,15 @@
     <div class="field">
       <label for="object">Object</label>
       <button type="button" (click)="toggleTableVisibility()">
-        {{ isTableVisible ? 'Hide Object Selection' : 'Select Object' }}
+        {{ isTableVisible ? "Hide Object Selection" : "Select Object" }}
       </button>
-      <label for="objectShow">{{ object.name || '' }}</label>
+      <label for="objectShow">{{ object.name || "" }}</label>
       <div *ngIf="isTableVisible">
-        <app-table-template [objects]="objects" [isSelect]="true" (objectSelected)="selectedObject($event)"></app-table-template>
+        <app-table-template
+          [objects]="objects"
+          [isSelect]="true"
+          (objectSelected)="selectedObject($event)"
+        ></app-table-template>
       </div>
     </div>
     <p-button
@@ -79,5 +94,8 @@
   </p-card>
 </form>
 <div *ngIf="requestLink">
-  <p>Request submitted successfully. You can <a [routerLink]="requestLink">check the status of your request</a></p>
+  <p>
+    Request submitted successfully. You can
+    <a [routerLink]="requestLink">check the status of your request</a>
+  </p>
 </div>

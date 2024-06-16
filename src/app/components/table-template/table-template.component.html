@@ -1,4 +1,9 @@
-<ng-template #objectListTemplate let-objects="objects" let-isSelect="isSelect" let-isEdit="isEdit">
+<ng-template
+  #objectListTemplate
+  let-objects="objects"
+  let-isSelect="isSelect"
+  let-isEdit="isEdit"
+>
   <p-table
     dataKey="id"
     [columns]="cols"
@@ -6,33 +11,64 @@
     [tableStyle]="{ 'min-width': '50rem' }"
     [paginator]="true"
     [rows]="5"
-    [rowsPerPageOptions]="[5, 10, 20]">
+    [rowsPerPageOptions]="[5, 10, 20]"
+  >
     <ng-template pTemplate="header" let-columns>
-      <tr [ngStyle]="{height: 'auto'}">
-        <th *ngFor="let col of columns" pSortableColumn={{col.header}} >{{ col.header }}
-          <p-sortIcon field={{col.header}} />
-        </th><th></th>
+      <tr [ngStyle]="{ height: 'auto' }">
+        <th *ngFor="let col of columns" pSortableColumn="{{ col.header }}">
+          {{ col.header }}
+          <p-sortIcon field="{{ col.header }}" />
+        </th>
+        <th></th>
       </tr>
       <tr>
         <th *ngFor="let col of columns">
-            <p-columnFilter type="text" field={{col.header}} [showClearButton]="false" />
-        </th><th></th>
+          <p-columnFilter
+            type="text"
+            field="{{ col.header }}"
+            [showClearButton]="false"
+          />
+        </th>
+        <th></th>
       </tr>
     </ng-template>
     <ng-template pTemplate="body" let-rowData let-columns="columns">
       <tr>
         <td *ngFor="let col of columns">
-          <span *ngIf="col.field !== 'registrationDate'">{{ rowData[col.field] }}</span>
-          <span *ngIf="col.field === 'registrationDate'">{{ rowData[col.field] | date:'dd-MM-yyyy' }}</span>
+          <span *ngIf="col.field !== 'registrationDate'">{{
+            rowData[col.field]
+          }}</span>
+          <span *ngIf="col.field === 'registrationDate'">{{
+            rowData[col.field] | date : "dd-MM-yyyy"
+          }}</span>
         </td>
         <td width="5%">
-          <p-button *ngIf="isSelect" (onClick)="selectObject(rowData)" label="Select"></p-button>
-          <p-button *ngIf="isEdit" (onClick)="editObject(rowData.id)" icon="pi pi-pencil" severity="warning"></p-button>
-          <p-button *ngIf="isEdit" (onClick)="deleteObject(rowData.id)" icon="pi pi-trash" severity="danger"></p-button>
+          <p-button
+            *ngIf="isSelect"
+            (onClick)="selectObject(rowData)"
+            label="Select"
+          ></p-button>
+          <p-button
+            *ngIf="isEdit"
+            (onClick)="editObject(rowData.id)"
+            icon="pi pi-pencil"
+            severity="warning"
+          ></p-button>
+          <p-button
+            *ngIf="isEdit"
+            (onClick)="deleteObject(rowData.id)"
+            icon="pi pi-trash"
+            severity="danger"
+          ></p-button>
         </td>
       </tr>
     </ng-template>
   </p-table>
 </ng-template>
-<ng-container *ngTemplateOutlet="objectListTemplate; context: { objects: objects, isSelect: isSelect, isEdit: isEdit }">
+<ng-container
+  *ngTemplateOutlet="
+    objectListTemplate;
+    context: { objects: objects, isSelect: isSelect, isEdit: isEdit }
+  "
+>
 </ng-container>

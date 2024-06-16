@@ -9,40 +9,42 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { Column } from '../../models/shared-models';
 
-
 @Component({
   selector: 'app-requests-list',
   standalone: true,
   imports: [
-    TableModule, CommonModule, ButtonModule, PaginatorModule, FormsModule, DropdownModule
+    TableModule,
+    CommonModule,
+    ButtonModule,
+    PaginatorModule,
+    FormsModule,
+    DropdownModule,
   ],
   templateUrl: './requests-list.component.html',
-  styleUrl: './requests-list.component.css'
+  styleUrl: './requests-list.component.css',
 })
-
-
-export class RequestsListComponent implements OnInit{
+export class RequestsListComponent implements OnInit {
   requests!: RequestModel[];
-  statusOptions!: { label: string, value: string }[];
+  statusOptions!: { label: string; value: string }[];
 
   cols: Column[] = [
     { field: 'title', header: 'title' },
     { field: 'description', header: 'description' },
     { field: 'submissionDate', header: 'submissionDate' },
-    { field: 'objectId', header: 'objectId' }
+    { field: 'objectId', header: 'objectId' },
   ];
 
   constructor(private baseService: BaseService) {}
 
   ngOnInit() {
-    this.baseService.getAllRequests().subscribe(data => {
-        this.requests = data;
+    this.baseService.getAllRequests().subscribe((data) => {
+      this.requests = data;
     });
 
     this.statusOptions = [
       { label: 'Pending', value: 'Pending' },
       { label: 'Rejected', value: 'Rejected' },
-      { label: 'Completed', value: 'Completed' }
+      { label: 'Completed', value: 'Completed' },
     ];
   }
 
@@ -50,10 +52,10 @@ export class RequestsListComponent implements OnInit{
     const newStatus = event.value;
     console.log(event, request);
     this.baseService.updateRequest(request.id, request).subscribe(
-      response => {
+      (response) => {
         console.log('Status updated successfully', response);
       },
-      error => {
+      (error) => {
         console.error('Error updating status', error);
       }
     );

@@ -21,10 +21,10 @@ import { DatePipe } from '@angular/common';
     InputTextModule,
     FormsModule,
     InputTextareaModule,
-    DatePipe
+    DatePipe,
   ],
   templateUrl: './table-template.component.html',
-  styleUrl: './table-template.component.css'
+  styleUrl: './table-template.component.css',
 })
 export class TableTemplateComponent {
   @Input() isSelect: boolean = false;
@@ -39,9 +39,8 @@ export class TableTemplateComponent {
     { field: 'name', header: 'name' },
     { field: 'address', header: 'address' },
     { field: 'registrationDate', header: 'registrationDate' },
-    { field: 'requestsCount', header: 'requestsCount' }
+    { field: 'requestsCount', header: 'requestsCount' },
   ];
-
 
   selectObject(obj: ObjectModel) {
     this.objectSelected.emit(obj);

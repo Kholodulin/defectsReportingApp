@@ -21,15 +21,15 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     ToastModule,
     CommonModule,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css'
+  styleUrl: './login.component.css',
 })
 export class LoginComponent {
   loginForm = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required]
+    password: ['', Validators.required],
   });
 
   requestLink: string = '/register';
@@ -38,32 +38,44 @@ export class LoginComponent {
     private authService: AuthService,
     private router: Router,
     private messageService: MessageService
-  ) { }
+  ) {}
 
   get email() {
     return this.loginForm.controls['email'];
   }
-  get password() { return this.loginForm.controls['password']; }
+  get password() {
+    return this.loginForm.controls['password'];
+  }
 
   loginUser() {
     if (this.loginForm.valid) {
       const { email, password } = this.loginForm.value;
-      const credentials = { email: email as string, password: password as string };
+      const credentials = {
+        email: email as string,
+        password: password as string,
+      };
 
       this.authService.login(credentials).subscribe(
-        response => {
+        (response) => {
           if (response.accessToken) {
             localStorage.setItem('accessToken', response.accessToken);
             this.router.navigate(['/submit-request']);
           } else {
-            this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Email or password is wrong' });
+            this.messageService.add({
+              severity: 'error',
+              summary: 'Error',
+              detail: 'Email or password is wrong',
+            });
           }
         },
-        error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Something went wrong',
+          });
         }
       );
     }
   }
 }
-

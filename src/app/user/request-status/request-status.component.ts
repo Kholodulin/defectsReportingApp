@@ -9,12 +9,15 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './request-status.component.html',
-  styleUrl: './request-status.component.css'
+  styleUrl: './request-status.component.css',
 })
-export class RequestStatusComponent implements OnInit{
+export class RequestStatusComponent implements OnInit {
   request!: RequestModel;
 
-  constructor(private route: ActivatedRoute, private baseService: BaseService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private baseService: BaseService
+  ) {}
 
   ngOnInit() {
     const requestId = this.route.snapshot.paramMap.get('id');
@@ -23,7 +26,7 @@ export class RequestStatusComponent implements OnInit{
         (request: RequestModel) => {
           this.request = request;
         },
-        error => {
+        (error) => {
           console.error('Error fetching request', error);
         }
       );

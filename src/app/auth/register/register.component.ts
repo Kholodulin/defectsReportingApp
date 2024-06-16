@@ -12,7 +12,6 @@ import { ToastModule } from 'primeng/toast';
 import { User } from '../interfaces';
 import { CommonModule } from '@angular/common';
 
-
 @Component({
   selector: 'app-register',
   standalone: true,
@@ -24,29 +23,37 @@ import { CommonModule } from '@angular/common';
     HttpClientModule,
     ToastModule,
     CommonModule,
-    RouterLink
+    RouterLink,
   ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css'
+  styleUrl: './register.component.css',
 })
 export class RegisterComponent {
-  user !: User;
-  registerForm = this.fb.group({
-    fullName: ['', [Validators.required, Validators.pattern(/^[\p{L}][\p{L} .'-]*[\p{L}.]$/u
-  )]],
-    email: ['', [Validators.required, Validators.email]],
-    password: ['', Validators.required],
-    confirmPassword: ['', Validators.required]
-  }, {
-    validators: passwordMatchValidator
-  })
+  user!: User;
+  registerForm = this.fb.group(
+    {
+      fullName: [
+        '',
+        [
+          Validators.required,
+          Validators.pattern(/^[\p{L}][\p{L} .'-]*[\p{L}.]$/u),
+        ],
+      ],
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', Validators.required],
+      confirmPassword: ['', Validators.required],
+    },
+    {
+      validators: passwordMatchValidator,
+    }
+  );
   requestLink: string = '/login';
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
     private messageService: MessageService,
     private router: Router
-  ) { }
+  ) {}
 
   get fullName() {
     return this.registerForm.controls['fullName'];
@@ -69,11 +76,15 @@ export class RegisterComponent {
       const postData = { ...this.registerForm.value };
       delete postData.confirmPassword;
       this.authService.registerUser(postData as User).subscribe(
-        response => {
+        (response) => {
           this.router.navigate(['login']);
         },
-        error => {
-          this.messageService.add({ severity: 'error', summary: 'Error', detail: 'Something went wrong' });
+        (error) => {
+          this.messageService.add({
+            severity: 'error',
+            summary: 'Error',
+            detail: 'Something went wrong',
+          });
         }
       );
     }

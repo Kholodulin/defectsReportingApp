@@ -2,7 +2,10 @@ import { ApplicationConfig, importProvidersFrom } from '@angular/core';
 import { provideRouter } from '@angular/router';
 
 import { routes } from './app.routes';
-import { BrowserModule, provideClientHydration } from '@angular/platform-browser';
+import {
+  BrowserModule,
+  provideClientHydration,
+} from '@angular/platform-browser';
 import { provideHttpClient } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
@@ -10,12 +13,9 @@ import { MessageService } from 'primeng/api';
 export const appConfig: ApplicationConfig = {
   providers: [
     provideHttpClient(),
-    importProvidersFrom([
-      BrowserAnimationsModule,
-      BrowserModule
-    ]),
+    importProvidersFrom([BrowserAnimationsModule, BrowserModule]),
     provideRouter(routes),
     provideClientHydration(),
-    MessageService
-  ]
+    MessageService,
+  ],
 };

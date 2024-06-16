@@ -5,7 +5,7 @@ import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FileUploadService {
   private minioUrl = 'http://localhost:9000';
@@ -22,20 +22,22 @@ export class FileUploadService {
       region: this.region,
       credentials: {
         accessKeyId: this.accessKeyId,
-        secretAccessKey: this.secretAccessKey
+        secretAccessKey: this.secretAccessKey,
       },
-      forcePathStyle: true // needed with Minio
+      forcePathStyle: true, // needed with Minio
     });
   }
 
   uploadFiles(files: File[], fileNamePrefix: string = ''): Observable<any[]> {
-    const uploadRequests = files.map(file => {
-      const fileName = fileNamePrefix ? `${fileNamePrefix}_${file.name}` : file.name;
+    const uploadRequests = files.map((file) => {
+      const fileName = fileNamePrefix
+        ? `${fileNamePrefix}_${file.name}`
+        : file.name;
       const command = new PutObjectCommand({
         Bucket: this.bucketName,
         Key: fileName,
         Body: file,
-        ContentType: file.type
+        ContentType: file.type,
       });
 
       return new Observable((observer) => {

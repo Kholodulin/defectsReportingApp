@@ -1,4 +1,4 @@
-:host ::ng-deep .descriptionLabel{
+:host ::ng-deep .descriptionLabel {
   margin-top: 5px;
   display: flex;
 }
