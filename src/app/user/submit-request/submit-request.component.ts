@@ -14,7 +14,7 @@ import { RequestModel } from '../../models/request-model';
 import { ObjectModel } from '../../models/object-model';
 import { FloatLabelModule } from 'primeng/floatlabel';
 import { InputTextareaModule } from 'primeng/inputtextarea';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ObjectsListComponent } from '../../manager/objects-list/objects-list.component';
 import { TableTemplateComponent } from '../../components/table-template/table-template.component';
 import { CardModule } from 'primeng/card';
@@ -68,7 +68,8 @@ export class SubmitRequestComponent implements OnInit {
     private objectService: ObjectService,
     private fb: FormBuilder,
     private messageService: MessageService,
-    private fileUploadService: FileUploadService
+    private fileUploadService: FileUploadService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -126,6 +127,9 @@ export class SubmitRequestComponent implements OnInit {
             detail: 'Form submitted successfully',
           });
           this.clearForm();
+          this.requestLink = this.router
+            .createUrlTree(['/request-status', response.id])
+            .toString();
         },
         (error) => {
           this.messageService.add({

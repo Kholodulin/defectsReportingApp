@@ -39,6 +39,10 @@ export class RequestService {
   }
 
   findRequestById(id: string): Observable<RequestModel> {
-    return this.http.get<RequestModel>(`${this.requestsUrl}/${id}`);
+    return this.http.get<RequestModel>(`${this.requestsUrl}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    });
   }
 }
