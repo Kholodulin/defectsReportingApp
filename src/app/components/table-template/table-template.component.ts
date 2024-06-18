@@ -9,10 +9,13 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { DatePipe } from '@angular/common';
+import { CustomDatePipe } from '../../pipes/custom-date.pipe';
 
 @Component({
   selector: 'app-table-template',
   standalone: true,
+  templateUrl: './table-template.component.html',
+  styleUrl: './table-template.component.css',
   imports: [
     TableModule,
     CommonModule,
@@ -22,9 +25,8 @@ import { DatePipe } from '@angular/common';
     FormsModule,
     InputTextareaModule,
     DatePipe,
+    CustomDatePipe,
   ],
-  templateUrl: './table-template.component.html',
-  styleUrl: './table-template.component.css',
 })
 export class TableTemplateComponent {
   @Input() isSelect: boolean = false;

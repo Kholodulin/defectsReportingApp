@@ -48,6 +48,10 @@ export class ObjectService {
   }
 
   findObjectById(id: string): Observable<ObjectModel> {
-    return this.http.get<ObjectModel>(`${this.objectsUrl}/${id}`);
+    return this.http.get<ObjectModel>(`${this.objectsUrl}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+      },
+    });
   }
 }

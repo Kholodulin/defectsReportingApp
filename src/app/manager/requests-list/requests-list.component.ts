@@ -8,10 +8,13 @@ import { RequestModel } from '../../models/request-model';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { Column } from '../../models/shared-models';
+import { CustomDatePipe } from '../../pipes/custom-date.pipe';
 
 @Component({
   selector: 'app-requests-list',
   standalone: true,
+  templateUrl: './requests-list.component.html',
+  styleUrl: './requests-list.component.css',
   imports: [
     TableModule,
     CommonModule,
@@ -19,9 +22,8 @@ import { Column } from '../../models/shared-models';
     PaginatorModule,
     FormsModule,
     DropdownModule,
+    CustomDatePipe,
   ],
-  templateUrl: './requests-list.component.html',
-  styleUrl: './requests-list.component.css',
 })
 export class RequestsListComponent implements OnInit {
   requests!: RequestModel[];

@@ -39,7 +39,7 @@
             rowData[col.field]
           }}</span>
           <span *ngIf="col.field === 'registrationDate'">{{
-            rowData[col.field] | date : "dd-MM-yyyy"
+            rowData[col.field] | appCustomDate
           }}</span>
         </td>
         <td width="5%">
