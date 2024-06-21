@@ -19,4 +19,19 @@ export class AuthService {
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http.post(`${this.baseUrl}/login`, credentials);
   }
+
+  isTokenExpired(token: string): boolean {
+    const tokenPlayload = token.split('.')[1];
+    const decodePlayload = JSON.parse(atob(tokenPlayload));
+    if (!decodePlayload.exp) {
+      return false;
+    }
+
+    const expiryDate = new Date(decodePlayload.exp * 1000);
+    if (!expiryDate) {
+      return false;
+    }
+
+    return new Date() > expiryDate;
+  }
 }
