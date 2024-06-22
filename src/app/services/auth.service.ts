@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable } from 'rxjs';
+import { Observable, map } from 'rxjs';
 import { User } from '../auth/interfaces';
 
 @Injectable({
@@ -33,5 +33,22 @@ export class AuthService {
     }
 
     return new Date() > expiryDate;
+  }
+
+  getUserRole(): Observable<string> {
+    const email = this.getEmailFromToken();
+    return this.http
+      .get<User[]>(`${this.baseUrl}/users?email=${email}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+        },
+      })
+      .pipe(map((user) => user[0].role));
+  }
+
+  getEmailFromToken(): string {
+    const token = localStorage.getItem('accessToken') as string;
+    const tokenPlayload = JSON.parse(atob(token.split('.')[1]));
+    return tokenPlayload.email;
   }
 }

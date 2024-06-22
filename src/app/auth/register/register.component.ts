@@ -73,7 +73,7 @@ export class RegisterComponent {
 
   submitDetails() {
     if (this.registerForm.valid) {
-      const postData = { ...this.registerForm.value };
+      const postData = { ...this.registerForm.value, role: 'User' };
       delete postData.confirmPassword;
       this.authService.registerUser(postData as User).subscribe(
         (response) => {

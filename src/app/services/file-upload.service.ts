@@ -9,9 +9,9 @@ import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 })
 export class FileUploadService {
   private minioUrl = 'http://localhost:9000';
-  private bucketName = 'my-bucket'; // Replace 'my-bucket' with your bucket name
-  private accessKeyId = 'username'; // Replace with your Minio access key
-  private secretAccessKey = 'password'; // Replace with your Minio secret key
+  private bucketName = 'my-bucket';
+  private accessKeyId = 'minioadmin';
+  private secretAccessKey = 'minioadmin';
   private region = 'us-east-1';
 
   private s3Client: S3Client;

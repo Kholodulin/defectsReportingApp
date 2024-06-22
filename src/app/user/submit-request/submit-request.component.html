@@ -78,7 +78,7 @@
         {{ isTableVisible ? "Hide Object Selection" : "Select Object" }}
       </button>
       <label for="objectShow">{{ object.name || "" }}</label>
-      <div *ngIf="isTableVisible">
+      <div *ngIf="isTableVisible" #tableContainer>
         <app-table-template
           [objects]="objects"
           [isSelect]="true"

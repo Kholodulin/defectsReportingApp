@@ -90,7 +90,15 @@
       "email": "mail@mail.ru",
       "password": "$2a$10$8A7mg5qBHn2H5uo2GFthF.s1RGnThxRqXVEpJii8rHAZl1wwlW80C",
       "fullName": "name",
-      "id": 1
+      "id": 1,
+      "role": "Manager"
+    },
+    {
+      "email": "m@m.ru",
+      "password": "$2a$10$adDUGpH6WBgCgPb5Vk4yvuNh6eGhb3fv8U99jg2Rquxb14UMwKVWW",
+      "fullName": "testName",
+      "role": "User",
+      "id": 2
     }
   ]
 }
