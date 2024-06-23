@@ -15,7 +15,7 @@ import { CustomDatePipe } from '../../pipes/custom-date.pipe';
   selector: 'app-table-template',
   standalone: true,
   templateUrl: './table-template.component.html',
-  styleUrl: './table-template.component.css',
+  styleUrl: './table-template.component.scss',
   imports: [
     TableModule,
     CommonModule,

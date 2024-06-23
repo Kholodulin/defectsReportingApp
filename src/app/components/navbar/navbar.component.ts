@@ -8,7 +8,7 @@ import { LoginComponent } from '../../auth/login/login.component';
   standalone: true,
   imports: [RouterLink, RouterLinkActive, MenubarModule, LoginComponent],
   templateUrl: './navbar.component.html',
-  styleUrl: './navbar.component.css',
+  styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
   items!: any[];

@@ -1,0 +1,31 @@
+:host ::ng-deep .p-datepicker {
+  table {
+    td {
+      padding: 0.2rem !important;
+
+      > span {
+        width: 1rem;
+        height: 1rem;
+      }
+    }
+
+    font-size: 6pt;
+    margin: -0.143rem 0;
+
+    .p-datepicker-header {
+      padding: 0.2rem;
+    }
+  }
+
+  .p-inputtext {
+    width: 60%;
+  }
+
+  .p-inputtextarea {
+    min-height: 3em;
+  }
+
+  .custom-calendar {
+    width: 90%;
+  }
+}

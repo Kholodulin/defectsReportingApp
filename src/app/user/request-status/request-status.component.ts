@@ -9,7 +9,7 @@ import { RequestService } from '../../services/request.service';
   standalone: true,
   imports: [CommonModule],
   templateUrl: './request-status.component.html',
-  styleUrl: './request-status.component.css',
+  styleUrl: './request-status.component.scss',
 })
 export class RequestStatusComponent implements OnInit {
   request!: RequestModel;

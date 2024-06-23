@@ -24,7 +24,7 @@ import { CommonModule } from '@angular/common';
     RouterLink,
   ],
   templateUrl: './login.component.html',
-  styleUrl: './login.component.css',
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   loginForm = this.fb.group({

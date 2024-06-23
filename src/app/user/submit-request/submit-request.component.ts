@@ -29,7 +29,7 @@ import { ObjectService } from './../../services/object.service';
   selector: 'app-submit-request',
   standalone: true,
   templateUrl: './submit-request.component.html',
-  styleUrl: './submit-request.component.css',
+  styleUrl: './submit-request.component.scss',
   imports: [
     CommonModule,
     TableModule,

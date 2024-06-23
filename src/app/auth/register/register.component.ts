@@ -26,7 +26,7 @@ import { CommonModule } from '@angular/common';
     RouterLink,
   ],
   templateUrl: './register.component.html',
-  styleUrl: './register.component.css',
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   user!: User;

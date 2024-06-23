@@ -20,7 +20,7 @@ import { ObjectService } from '../../services/object.service';
   selector: 'app-objects-list',
   standalone: true,
   templateUrl: './objects-list.component.html',
-  styleUrl: './objects-list.component.css',
+  styleUrl: './objects-list.component.scss',
   imports: [
     CommonModule,
     ButtonModule,

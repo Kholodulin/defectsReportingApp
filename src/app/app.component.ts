@@ -8,7 +8,7 @@ import { ToastModule } from 'primeng/toast';
   standalone: true,
   imports: [RouterOutlet, NavbarComponent, ToastModule],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.css',
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'defectReportingApp';
