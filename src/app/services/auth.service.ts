@@ -2,8 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import { BehaviorSubject, Observable, map, of, switchMap, tap } from 'rxjs';
-import { User } from '../auth/interfaces';
-import { response } from 'express';
+import { User } from '../auth/user-model';
 
 @Injectable({
   providedIn: 'root',

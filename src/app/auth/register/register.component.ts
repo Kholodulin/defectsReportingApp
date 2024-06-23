@@ -1,35 +1,20 @@
 import { Component } from '@angular/core';
-import { CardModule } from 'primeng/card';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 import { AuthService } from '../../services/auth.service';
-import { passwordMatchValidator } from '../../shared/password-match.directive';
-import { InputTextModule } from 'primeng/inputtext';
-import { HttpClientModule } from '@angular/common/http';
-import { ButtonModule } from 'primeng/button';
-import { ToastModule } from 'primeng/toast';
-import { User } from '../interfaces';
-import { CommonModule } from '@angular/common';
+import { passwordMatchValidator } from '../password-match.validator';
+import { User } from '../user-model';
 
 @Component({
   selector: 'app-register',
-  standalone: true,
-  imports: [
-    CardModule,
-    InputTextModule,
-    ReactiveFormsModule,
-    ButtonModule,
-    HttpClientModule,
-    ToastModule,
-    CommonModule,
-    RouterLink,
-  ],
   templateUrl: './register.component.html',
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   user!: User;
+  requestLink: string = '/auth/login';
+
   registerForm = this.fb.group(
     {
       fullName: [
@@ -47,7 +32,7 @@ export class RegisterComponent {
       validators: passwordMatchValidator,
     }
   );
-  requestLink: string = '/login';
+
   constructor(
     private fb: FormBuilder,
     private authService: AuthService,
@@ -77,7 +62,7 @@ export class RegisterComponent {
       delete postData.confirmPassword;
       this.authService.registerUser(postData as User).subscribe(
         (response) => {
-          this.router.navigate(['login']);
+          this.router.navigate(['auth/login']);
         },
         (error) => {
           this.messageService.add({

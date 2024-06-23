@@ -2,12 +2,11 @@ import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { MenubarModule } from 'primeng/menubar';
-import { LoginComponent } from '../../auth/login/login.component';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, MenubarModule, LoginComponent],
+  imports: [RouterLink, RouterLinkActive, MenubarModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
@@ -52,12 +51,18 @@ export class NavbarComponent implements OnInit {
       {
         label: 'Login',
         icon: 'pi pi-sign-in',
-        routerLink: ['/login'],
+        routerLink: ['auth/login'],
+        visible: !this.userRole,
+      },
+      {
+        label: 'Register',
+        icon: 'pi pi-address-book',
+        routerLink: ['auth/register'],
         visible: !this.userRole,
       },
       {
         icon: 'pi pi-sign-out',
-        routerLink: ['/login'],
+        routerLink: ['auth/login'],
         command: () => this.LogOut(),
         visible: !!this.userRole,
       },
