@@ -57,8 +57,8 @@ export class LoginComponent {
 
       this.authService.login(credentials).subscribe(
         (response) => {
-          if (response.accessToken) {
-            localStorage.setItem('accessToken', response.accessToken);
+          console.log(response);
+          if (response) {
             this.router.navigate(['/submit-request']);
           } else {
             this.messageService.add({
@@ -69,6 +69,7 @@ export class LoginComponent {
           }
         },
         (error) => {
+          console.log(error);
           this.messageService.add({
             severity: 'error',
             summary: 'Error',

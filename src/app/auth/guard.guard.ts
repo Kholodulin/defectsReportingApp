@@ -8,7 +8,7 @@ export const authGuard: CanActivateFn = (route, state) => {
 
   return new Promise<boolean>((resolve) => {
     if (!authService.isTokenExpired()) {
-      authService.getUserRole().subscribe(
+      authService.getUserRoleFromToken().subscribe(
         (userRole) => {
           const requiredRole = route.data['role'];
 
@@ -24,7 +24,7 @@ export const authGuard: CanActivateFn = (route, state) => {
         }
       );
     } else {
-      localStorage.removeItem('accessToken');
+      authService.logout();
       router.navigate(['/login']).then(() => resolve(false));
     }
   });

@@ -1,8 +1,9 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, map, of } from 'rxjs';
+import { BehaviorSubject, Observable, map, of, switchMap, tap } from 'rxjs';
 import { User } from '../auth/interfaces';
+import { response } from 'express';
 
 @Injectable({
   providedIn: 'root',
@@ -10,14 +11,29 @@ import { User } from '../auth/interfaces';
 export class AuthService {
   private baseUrl = environment.API_URL;
 
-  constructor(private http: HttpClient) {}
+  private userRoleSubject = new BehaviorSubject<string | null>(null);
+  private userRole$ = this.userRoleSubject.asObservable();
+
+  constructor(private http: HttpClient) {
+    this.getUserRoleFromToken().subscribe((role) => {
+      this.userRoleSubject.next(role);
+    });
+  }
 
   registerUser(userDetails: User): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, userDetails);
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
-    return this.http.post(`${this.baseUrl}/login`, credentials);
+    return this.http
+      .post<{ accessToken: string }>(`${this.baseUrl}/login`, credentials)
+      .pipe(
+        tap((response) => {
+          localStorage.setItem('accessToken', response.accessToken);
+        }),
+        switchMap(() => this.getUserRoleFromToken()),
+        tap((role) => this.userRoleSubject.next(role))
+      );
   }
 
   isTokenExpired(): boolean {
@@ -42,7 +58,7 @@ export class AuthService {
     return new Date() > expiryDate;
   }
 
-  getUserRole(): Observable<string | null> {
+  getUserRoleFromToken(): Observable<string | null> {
     const email = this.getEmailFromToken();
     if (!email) {
       return of(null);
@@ -53,7 +69,11 @@ export class AuthService {
           Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
         },
       })
-      .pipe(map((user) => user[0].role));
+      .pipe(map((user) => user[0]?.role ?? null));
+  }
+
+  getRole(): Observable<string | null> {
+    return this.userRole$;
   }
 
   getEmailFromToken(): string | null {
@@ -66,5 +86,10 @@ export class AuthService {
     }
     const tokenPlayload = JSON.parse(atob(token.split('.')[1]));
     return tokenPlayload.email;
+  }
+
+  logout() {
+    localStorage.clear();
+    this.userRoleSubject.next(null);
   }
 }
