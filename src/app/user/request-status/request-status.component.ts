@@ -33,6 +33,5 @@ export class RequestStatusComponent implements OnInit {
     } else {
       console.error('Invalid request ID');
     }
-    console.log(requestId, this.request);
   }
 }

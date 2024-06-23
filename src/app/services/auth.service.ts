@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { Observable, map } from 'rxjs';
+import { Observable, map, of } from 'rxjs';
 import { User } from '../auth/interfaces';
 
 @Injectable({
@@ -20,7 +20,14 @@ export class AuthService {
     return this.http.post(`${this.baseUrl}/login`, credentials);
   }
 
-  isTokenExpired(token: string): boolean {
+  isTokenExpired(): boolean {
+    if (typeof window === 'undefined') {
+      return false;
+    }
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      return false;
+    }
     const tokenPlayload = token.split('.')[1];
     const decodePlayload = JSON.parse(atob(tokenPlayload));
     if (!decodePlayload.exp) {
@@ -35,8 +42,11 @@ export class AuthService {
     return new Date() > expiryDate;
   }
 
-  getUserRole(): Observable<string> {
+  getUserRole(): Observable<string | null> {
     const email = this.getEmailFromToken();
+    if (!email) {
+      return of(null);
+    }
     return this.http
       .get<User[]>(`${this.baseUrl}/users?email=${email}`, {
         headers: {
@@ -46,8 +56,14 @@ export class AuthService {
       .pipe(map((user) => user[0].role));
   }
 
-  getEmailFromToken(): string {
-    const token = localStorage.getItem('accessToken') as string;
+  getEmailFromToken(): string | null {
+    if (typeof window === 'undefined') {
+      return null;
+    }
+    const token = localStorage.getItem('accessToken');
+    if (!token) {
+      return null;
+    }
     const tokenPlayload = JSON.parse(atob(token.split('.')[1]));
     return tokenPlayload.email;
   }

@@ -7,27 +7,24 @@ export const authGuard: CanActivateFn = (route, state) => {
   const authService = inject(AuthService);
 
   return new Promise<boolean>((resolve) => {
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('accessToken');
-      if (token && !authService.isTokenExpired(token)) {
-        authService.getUserRole().subscribe(
-          (userRole) => {
-            const requiredRole = route.data['role'];
-            if (requiredRole && userRole !== requiredRole) {
-              router.navigate(['/access-denied']).then(() => resolve(false));
-            } else {
-              resolve(true);
-            }
-          },
-          (result) => {
-            resolve(false);
+    if (!authService.isTokenExpired()) {
+      authService.getUserRole().subscribe(
+        (userRole) => {
+          const requiredRole = route.data['role'];
+
+          if (requiredRole && userRole !== requiredRole) {
+            router.navigate(['/page-not-found']).then(() => resolve(false));
+          } else {
+            resolve(true);
           }
-        );
-      } else {
-        localStorage.removeItem('accessToken');
-        router.navigate(['/login']).then(() => resolve(false));
-      }
+        },
+        (error) => {
+          resolve(false);
+          console.log(error);
+        }
+      );
     } else {
+      localStorage.removeItem('accessToken');
       router.navigate(['/login']).then(() => resolve(false));
     }
   });
