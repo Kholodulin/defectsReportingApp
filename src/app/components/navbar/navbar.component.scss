@@ -1,14 +1,23 @@
-:host ::ng-deep .p-menubar {
-  border: 1px solid green;
-  border-radius: 20px;
-  box-shadow: 0px 4px 6px 0px green;
-  background-color: #e3f2a8;
-  max-height: 70px;
-}
+:host ::ng-deep {
+  .p-menubar {
+    background-color: #e7efd1;
+    border: none;
+    border-radius: 0;
+  }
 
-:host ::ng-deep .p-menuitem {
-  background-color: rgb(131, 222, 56);
-  margin: 12px;
-  border-radius: 10px;
-  max-height: 50px;
+  .pi {
+    margin-right: 10px;
+  }
+  &.p-menuitem {
+    margin: 0 1px;
+  }
+  &.p-menuitem-link-active {
+    border: 2px solid #16b304;
+    margin: -1.5px;
+  }
+  .pi,
+  .p-menuitem-text {
+    color: #8b00db;
+    font-weight: 700;
+  }
 }

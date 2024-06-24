@@ -1,17 +1,19 @@
 import { AuthService } from './../../services/auth.service';
 import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
+import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [RouterLink, RouterLinkActive, MenubarModule],
+  imports: [RouterLink, RouterLinkActive, MenubarModule, InputTextModule],
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit {
   items: any[] = [];
+  loginLogoutItems: any[] = [];
   userRole: string | null = null;
 
   constructor(private authService: AuthService) {}
@@ -32,9 +34,6 @@ export class NavbarComponent implements OnInit {
   configureItems() {
     this.items = [
       ...(this.userRole === 'Manager'
-        ? [{ label: 'Requests', icon: 'pi pi-file', routerLink: ['/requests'] }]
-        : []),
-      ...(this.userRole === 'Manager'
         ? [
             {
               label: 'Objects',
@@ -42,6 +41,9 @@ export class NavbarComponent implements OnInit {
               routerLink: ['/objects'],
             },
           ]
+        : []),
+      ...(this.userRole === 'Manager'
+        ? [{ label: 'Requests', icon: 'pi pi-file', routerLink: ['/requests'] }]
         : []),
       {
         label: 'Submit Request',
@@ -53,18 +55,21 @@ export class NavbarComponent implements OnInit {
         icon: 'pi pi-sign-in',
         routerLink: ['auth/login'],
         visible: !this.userRole,
+        styleClass: 'ml-auto',
       },
       {
         label: 'Register',
         icon: 'pi pi-address-book',
         routerLink: ['auth/register'],
         visible: !this.userRole,
+        styleClass: 'ml-auto',
       },
       {
+        label: 'Logout',
         icon: 'pi pi-sign-out',
-        routerLink: ['auth/login'],
         command: () => this.LogOut(),
         visible: !!this.userRole,
+        styleClass: 'ml-auto',
       },
     ];
   }
