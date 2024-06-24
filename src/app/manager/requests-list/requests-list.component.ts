@@ -1,3 +1,4 @@
+import { ObjectService } from './../../services/object.service';
 import { RequestService } from './../../services/request.service';
 import { Component, OnInit } from '@angular/core';
 import { ButtonModule } from 'primeng/button';
@@ -9,6 +10,7 @@ import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
 import { Column } from '../../models/shared-models';
 import { CustomDatePipe } from '../../pipes/custom-date.pipe';
+import { forkJoin, map, mergeMap } from 'rxjs';
 
 @Component({
   selector: 'app-requests-list',
@@ -33,21 +35,41 @@ export class RequestsListComponent implements OnInit {
     { field: 'title', header: 'title' },
     { field: 'description', header: 'description' },
     { field: 'submissionDate', header: 'submissionDate' },
-    { field: 'objectId', header: 'objectId' },
+    { field: 'objectId', header: 'targetObject' },
   ];
 
-  constructor(private requestService: RequestService) {}
-
-  ngOnInit() {
-    this.requestService.getAllRequests().subscribe((data) => {
-      this.requests = data;
-    });
-
+  constructor(
+    private requestService: RequestService,
+    private objectService: ObjectService
+  ) {
     this.statusOptions = [
       { label: 'Pending', value: 'Pending' },
       { label: 'Rejected', value: 'Rejected' },
       { label: 'Completed', value: 'Completed' },
     ];
+  }
+
+  ngOnInit() {
+    this.requestService
+      .getAllRequests()
+      .pipe(
+        mergeMap((requests) => {
+          const objectRequests = requests.map((request) =>
+            this.objectService.findObjectById(request.objectId).pipe(
+              map((object) => ({
+                ...request,
+                objectId: object.name,
+              }))
+            )
+          );
+          return forkJoin(objectRequests).pipe(
+            map((updatedRequests) => updatedRequests)
+          );
+        })
+      )
+      .subscribe((updatedRequests) => {
+        this.requests = updatedRequests;
+      });
   }
 
   onDropdownChange(request: RequestModel) {
