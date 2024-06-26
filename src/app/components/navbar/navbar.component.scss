@@ -21,3 +21,18 @@
     font-weight: 700;
   }
 }
+.p-menuitem-link {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  color: inherit;
+  padding: 0.5rem 1rem;
+  &.active-link {
+    border: 2px solid #16b304;
+    margin: -1.5px;
+  }
+}
+.menuitem-container {
+  margin-left: auto;
+  flex-wrap: nowrap;
+}

@@ -1,1 +1,28 @@
-<p-menubar [model]="items"></p-menubar>
+<p-menubar [model]="items">
+  <ng-template pTemplate="end">
+    <div *ngIf="!userRole" class="flex ml-auto">
+      <a
+        [routerLink]="['auth/login']"
+        class="p-menuitem-link"
+        routerLinkActive="active-link"
+      >
+        <span class="pi pi-sign-in"></span>
+        <span>Login</span>
+      </a>
+      <a
+        [routerLink]="['auth/register']"
+        class="p-menuitem-link"
+        routerLinkActive="active-link"
+      >
+        <span class="pi pi-address-book"></span>
+        <span>Register</span>
+      </a>
+    </div>
+    <div *ngIf="userRole" class="ml-auto">
+      <a (click)="LogOut()" class="p-menuitem-link">
+        <span>Logout</span>
+        <span class="pi pi-sign-out ml-2"></span>
+      </a>
+    </div>
+  </ng-template>
+</p-menubar>
