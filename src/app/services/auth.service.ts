@@ -1,7 +1,15 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import { BehaviorSubject, Observable, map, of, switchMap, tap } from 'rxjs';
+import {
+  BehaviorSubject,
+  Observable,
+  catchError,
+  map,
+  of,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { User } from '../auth/user-model';
 
 @Injectable({
@@ -14,8 +22,12 @@ export class AuthService {
   private userRole$ = this.userRoleSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    this.getUserRoleFromToken().subscribe((role) => {
-      this.userRoleSubject.next(role);
+    this.getAccessToken().subscribe((token) => {
+      if (token) {
+        this.getUserRoleFromToken(token).subscribe((role) => {
+          this.userRoleSubject.next(role);
+        });
+      }
     });
   }
 
@@ -25,70 +37,79 @@ export class AuthService {
 
   login(credentials: { email: string; password: string }): Observable<any> {
     return this.http
-      .post<{ accessToken: string }>(`${this.baseUrl}/login`, credentials)
+      .post<{ accessToken: string }>(`${this.baseUrl}/login`, credentials, {
+        withCredentials: true,
+      })
       .pipe(
         tap((response) => {
-          localStorage.setItem('accessToken', response.accessToken);
+          if (this.isBrowser()) {
+            localStorage.setItem('accessToken', response.accessToken);
+          }
         }),
         switchMap(() => this.getUserRoleFromToken()),
         tap((role) => this.userRoleSubject.next(role))
       );
   }
 
-  isTokenExpired(): boolean {
-    if (typeof window === 'undefined') {
-      return false;
-    }
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      return false;
-    }
-    const tokenPlayload = token.split('.')[1];
-    const decodePlayload = JSON.parse(atob(tokenPlayload));
-    if (!decodePlayload.exp) {
-      return false;
-    }
-
-    const expiryDate = new Date(decodePlayload.exp * 1000);
-    if (!expiryDate) {
-      return false;
-    }
-
-    return new Date() > expiryDate;
+  logout(): void {
+    this.http
+      .post(`${this.baseUrl}/logout`, {}, { withCredentials: true })
+      .subscribe(() => {
+        if (this.isBrowser()) {
+          localStorage.removeItem('accessToken');
+        }
+        this.userRoleSubject.next(null);
+      });
   }
 
-  getUserRoleFromToken(): Observable<string | null> {
-    const email = this.getEmailFromToken();
-    if (!email) {
+  getAccessToken(): Observable<string | null> {
+    if (this.isBrowser()) {
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        return this.refreshAccessToken().pipe(
+          map((response) => response.accessToken),
+          catchError(() => of(null))
+        );
+      } else {
+        return of(token);
+      }
+    } else {
       return of(null);
     }
+  }
+
+  refreshAccessToken(): Observable<{ accessToken: string }> {
     return this.http
-      .get<User[]>(`${this.baseUrl}/users?email=${email}`, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
-        },
-      })
-      .pipe(map((user) => user[0]?.role ?? null));
+      .post<{ accessToken: string }>(
+        `${this.baseUrl}/token`,
+        {},
+        { withCredentials: true }
+      )
+      .pipe(
+        tap((response) => {
+          if (this.isBrowser()) {
+            localStorage.setItem('accessToken', response.accessToken);
+          }
+        })
+      );
   }
 
-  getRole(): Observable<string | null> {
-    return this.userRole$;
-  }
-
-  getEmailFromToken(): string | null {
-    if (typeof window === 'undefined') {
-      return null;
+  getUserRoleFromToken(token?: string): Observable<string | null> {
+    if (!token && this.isBrowser()) {
+      token = localStorage.getItem('accessToken') as string;
     }
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      return null;
+    if (token) {
+      const userRole = JSON.parse(atob(token.split('.')[1])).role;
+      return of(userRole);
+    } else {
+      return of(null);
     }
-    const tokenPlayload = JSON.parse(atob(token.split('.')[1]));
-    return tokenPlayload.email;
   }
 
-  logout() {
-    localStorage.clear();
-    this.userRoleSubject.next(null);
+  private isBrowser(): boolean {
+    return (
+      typeof window !== 'undefined' &&
+      typeof window.localStorage !== 'undefined'
+    );
   }
 }
