@@ -1,39 +1,24 @@
 import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
+import { Observable, catchError, map, of } from 'rxjs';
 
-export const authGuard: CanActivateFn = (route, state) => {
-  const router = inject(Router);
+export const authGuard: CanActivateFn = (): Observable<boolean> => {
   const authService = inject(AuthService);
+  const router = inject(Router);
 
-  return new Promise<boolean>((resolve) => {
-    authService.getAccessToken().subscribe(
-      (accessToken) => {
-        if (accessToken) {
-          authService.getUserRoleFromToken().subscribe(
-            (userRole) => {
-              const requiredRole = route.data['role'];
-
-              if (requiredRole && userRole !== requiredRole) {
-                resolve(false);
-              } else {
-                resolve(true);
-              }
-            },
-            (error) => {
-              resolve(false);
-              console.log(error);
-            }
-          );
-        } else {
-          authService.logout();
-          router.navigate(['auth/login']).then(() => resolve(false));
-        }
-      },
-      (error) => {
-        resolve(false);
-        console.log(error);
+  return authService.getAccessToken().pipe(
+    map((token) => {
+      if (token) {
+        return true;
+      } else {
+        router.navigate(['auth/login']);
+        return false;
       }
-    );
-  });
+    }),
+    catchError(() => {
+      router.navigate(['auth/login']);
+      return of(false);
+    })
+  );
 };

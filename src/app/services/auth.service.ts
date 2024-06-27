@@ -10,6 +10,7 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import { Router } from '@angular/router';
 import { User } from '../auth/user-model';
 
 @Injectable({
@@ -17,11 +18,10 @@ import { User } from '../auth/user-model';
 })
 export class AuthService {
   private baseUrl = environment.API_URL;
-
   private userRoleSubject = new BehaviorSubject<string | null>(null);
   private userRole$ = this.userRoleSubject.asObservable();
 
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private router: Router) {
     this.getAccessToken().subscribe((token) => {
       if (token) {
         this.getUserRoleFromToken(token).subscribe((role) => {
@@ -29,10 +29,6 @@ export class AuthService {
         });
       }
     });
-  }
-
-  registerUser(userDetails: User): Observable<any> {
-    return this.http.post(`${this.baseUrl}/register`, userDetails);
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
@@ -51,6 +47,10 @@ export class AuthService {
       );
   }
 
+  registerUser(userDetails: User): Observable<any> {
+    return this.http.post(`${this.baseUrl}/register`, userDetails);
+  }
+
   logout(): void {
     this.http
       .post(`${this.baseUrl}/logout`, {}, { withCredentials: true })
@@ -59,6 +59,7 @@ export class AuthService {
           localStorage.removeItem('accessToken');
         }
         this.userRoleSubject.next(null);
+        this.router.navigate(['auth/login']);
       });
   }
 
