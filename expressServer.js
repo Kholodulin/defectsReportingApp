@@ -125,7 +125,7 @@ let users = [
 ];
 
 const generateAccessToken = (user) => {
-  return jwt.sign(user, JWT_SECRET, { expiresIn: "20m" });
+  return jwt.sign(user, JWT_SECRET, { expiresIn: "2m" });
 };
 
 const generateRefreshToken = (user) => {
@@ -139,7 +139,13 @@ const authenticateToken = (req, res, next) => {
   if (token == null) return res.sendStatus(401);
 
   jwt.verify(token, JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
+    if (err) {
+      // Проверка типа ошибки
+      if (err.name === "TokenExpiredError") {
+        return res.sendStatus(401); // Возвращаем 401 при истечении срока действия токена
+      }
+      return res.sendStatus(403); // Возвращаем 403 для других ошибок
+    }
     req.user = user;
     next();
   });
@@ -220,7 +226,7 @@ app.post("/api/logout", (req, res) => {
 });
 
 // CRUD операции для constructionObjects и requests
-app.get("/api/constructionObjects", authenticateToken, (req, res) => {
+app.get("/api/constructionObjects", (req, res) => {
   res.json(constructionObjects);
 });
 
@@ -250,7 +256,7 @@ app.put("/api/constructionObjects/:id", authenticateToken, (req, res) => {
   res.status(200).json({ message: "Construction object updated" });
 });
 
-app.get("/api/constructionObjects/:id", authenticateToken, (req, res) => {
+app.get("/api/constructionObjects/:id", (req, res) => {
   const objectId = req.params.id;
   const object = constructionObjects.find((obj) => obj.id === objectId);
   if (object) {
@@ -260,11 +266,11 @@ app.get("/api/constructionObjects/:id", authenticateToken, (req, res) => {
   }
 });
 
-app.get("/api/requests", authenticateToken, (req, res) => {
+app.get("/api/requests", (req, res) => {
   res.json(requests);
 });
 
-app.post("/api/requests", authenticateToken, (req, res) => {
+app.post("/api/requests", (req, res) => {
   const newRequest = { ...req.body, id: (requests.length + 1).toString() };
   requests.push(newRequest);
   res.status(201).json({ message: "Request added" });
@@ -279,9 +285,11 @@ app.put("/api/requests/:id", authenticateToken, (req, res) => {
   res.status(200).json({ message: "Request updated" });
 });
 
-app.get("/api/requests/:id", authenticateToken, (req, res) => {
+app.get("/api/requests/:id", (req, res) => {
   const requestId = req.params.id;
-  const request = requests.find((req) => req.id === requestId);
+  const request = requests.find((req) => {
+    req.id === requestId;
+  });
   if (request) {
     res.json(request);
   } else {

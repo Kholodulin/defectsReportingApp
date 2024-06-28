@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
+import { distinctUntilChanged } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -26,15 +27,18 @@ export class NavbarComponent implements OnInit {
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.authService.getUserRoleFromToken().subscribe((role) => {
-      this.userRole = role;
-      this.configureItems();
-    });
+    this.authService
+      .getRole()
+      .pipe(distinctUntilChanged())
+      .subscribe((role) => {
+        this.userRole = role;
+        this.configureItems();
+      });
   }
 
   LogOut() {
     this.authService.logout();
-    this.userRole = null;
+    this.userRole = '';
     this.configureItems();
   }
 

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Injector } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import {
@@ -7,11 +7,10 @@ import {
   catchError,
   map,
   of,
-  switchMap,
   tap,
+  throwError,
 } from 'rxjs';
 import { Router } from '@angular/router';
-import { User } from '../auth/user-model';
 
 @Injectable({
   providedIn: 'root',
@@ -24,9 +23,9 @@ export class AuthService {
   constructor(private http: HttpClient, private router: Router) {
     this.getAccessToken().subscribe((token) => {
       if (token) {
-        this.getUserRoleFromToken(token).subscribe((role) => {
-          this.userRoleSubject.next(role);
-        });
+        localStorage.setItem('accessToken', token);
+        const role = this.getUserRoleFromToken(token);
+        this.userRoleSubject.next(role);
       }
     });
   }
@@ -38,29 +37,21 @@ export class AuthService {
       })
       .pipe(
         tap((response) => {
-          if (this.isBrowser()) {
-            localStorage.setItem('accessToken', response.accessToken);
-          }
-        }),
-        switchMap(() => this.getUserRoleFromToken()),
-        tap((role) => this.userRoleSubject.next(role))
+          localStorage.setItem('accessToken', response.accessToken);
+          const role = this.getUserRoleFromToken(response.accessToken);
+          this.userRoleSubject.next(role);
+        })
       );
   }
 
-  registerUser(userDetails: User): Observable<any> {
+  registerUser(userDetails: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, userDetails);
   }
 
   logout(): void {
-    this.http
-      .post(`${this.baseUrl}/logout`, {}, { withCredentials: true })
-      .subscribe(() => {
-        if (this.isBrowser()) {
-          localStorage.removeItem('accessToken');
-        }
-        this.userRoleSubject.next(null);
-        this.router.navigate(['auth/login']);
-      });
+    localStorage.removeItem('accessToken');
+    this.userRoleSubject.next(null);
+    this.router.navigate(['auth/login']);
   }
 
   getAccessToken(): Observable<string | null> {
@@ -91,26 +82,27 @@ export class AuthService {
           if (this.isBrowser()) {
             localStorage.setItem('accessToken', response.accessToken);
           }
+        }),
+        catchError((error) => {
+          this.logout();
+          return throwError(error);
         })
       );
   }
-
-  getUserRoleFromToken(token?: string): Observable<string | null> {
-    if (!token && this.isBrowser()) {
-      token = localStorage.getItem('accessToken') as string;
-    }
+  getUserRoleFromToken(token: string): string | null {
     if (token) {
       const userRole = JSON.parse(atob(token.split('.')[1])).role;
-      return of(userRole);
+      return userRole;
     } else {
-      return of(null);
+      return null;
     }
   }
 
   private isBrowser(): boolean {
-    return (
-      typeof window !== 'undefined' &&
-      typeof window.localStorage !== 'undefined'
-    );
+    return typeof window !== 'undefined';
+  }
+
+  getRole(): Observable<string | null> {
+    return this.userRole$;
   }
 }
