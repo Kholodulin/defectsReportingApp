@@ -10,6 +10,7 @@ import { PaginatorModule } from 'primeng/paginator';
 import { TableModule } from 'primeng/table';
 import { DatePipe } from '@angular/common';
 import { CustomDatePipe } from '../../pipes/custom-date.pipe';
+import { CustomPaginatorComponent } from '../custom-paginator/custom-paginator.component';
 
 @Component({
   selector: 'app-table-template',
@@ -26,12 +27,14 @@ import { CustomDatePipe } from '../../pipes/custom-date.pipe';
     InputTextareaModule,
     DatePipe,
     CustomDatePipe,
+    CustomPaginatorComponent,
   ],
 })
 export class TableTemplateComponent {
   @Input() isSelect: boolean = false;
   @Input() isEdit: boolean = false;
-  @Input() objects!: ObjectModel[];
+  @Input() objects: ObjectModel[] = [];
+  objectsFromPaginator: ObjectModel[] = [];
 
   @Output() objectSelected = new EventEmitter<ObjectModel>();
   @Output() objectToEdit = new EventEmitter<string>();
@@ -43,6 +46,10 @@ export class TableTemplateComponent {
     { field: 'registrationDate', header: 'registrationDate' },
     { field: 'requestsCount', header: 'requestsCount' },
   ];
+
+  getDataForShow(objects: ObjectModel[]) {
+    this.objectsFromPaginator = objects.slice();
+  }
 
   selectObject(obj: ObjectModel) {
     this.objectSelected.emit(obj);

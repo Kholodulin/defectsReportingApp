@@ -2,31 +2,87 @@
   "constructionObjects": [
     {
       "id": "1",
-      "name": "Building A",
+      "name": "1Building A",
       "address": "123 Main St",
       "registrationDate": "2023-01-01T00:00:00.000Z",
       "requestsCount": 2
     },
     {
       "id": "2",
-      "name": "Building B",
+      "name": "2Building B",
       "address": "456 Elm St",
       "registrationDate": "2023-02-01T00:00:00.000Z",
       "requestsCount": 1
     },
     {
       "id": "3",
-      "name": "Building A2",
+      "name": "3Building A2",
       "address": "123 Main St",
       "registrationDate": "2023-01-01T00:00:00.000Z",
       "requestsCount": 2
     },
     {
       "id": "4",
-      "name": "Building B copy",
+      "name": "4Building B copy",
       "address": "456 Elm St",
       "registrationDate": "2023-02-01T00:00:00.000Z",
       "requestsCount": 1
+    },
+    {
+      "id": "5",
+      "name": "5Building B copy",
+      "address": "456 Elm St",
+      "registrationDate": "2023-02-01T00:00:00.000Z",
+      "requestsCount": 1
+    },
+    {
+      "id": "6",
+      "name": "6Building A",
+      "address": "123 Main St",
+      "registrationDate": "2023-01-01T00:00:00.000Z",
+      "requestsCount": 2
+    },
+    {
+      "id": "7",
+      "name": "7Building B",
+      "address": "456 Elm St",
+      "registrationDate": "2023-02-01T00:00:00.000Z",
+      "requestsCount": 1
+    },
+    {
+      "id": "8",
+      "name": "8Building A2",
+      "address": "123 Main St",
+      "registrationDate": "2023-01-01T00:00:00.000Z",
+      "requestsCount": 2
+    },
+    {
+      "id": "9",
+      "name": "9Building A",
+      "address": "123 Main St",
+      "registrationDate": "2023-01-01T00:00:00.000Z",
+      "requestsCount": 2
+    },
+    {
+      "id": "10",
+      "name": "10Building B",
+      "address": "456 Elm St",
+      "registrationDate": "2023-02-01T00:00:00.000Z",
+      "requestsCount": 1
+    },
+    {
+      "id": "11",
+      "name": "11Building A2",
+      "address": "123 Main St",
+      "registrationDate": "2023-01-01T00:00:00.000Z",
+      "requestsCount": 2
+    },
+    {
+      "id": "12",
+      "name": "12Building A2",
+      "address": "123 Main St",
+      "registrationDate": "2023-01-01T00:00:00.000Z",
+      "requestsCount": 2
     }
   ],
   "requests": [

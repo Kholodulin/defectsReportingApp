@@ -1,0 +1,19 @@
+.paginator-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 30px);
+}
+
+:host ::ng-deep .p-button {
+  height: 40px;
+  width: 40px;
+  background-color: #fff;
+  border: #fff;
+}
+:host ::ng-deep .p-button-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #000;
+}

@@ -13,7 +13,7 @@ export const authGuard: CanActivateFn = (route, state) => {
           const requiredRole = route.data['role'];
 
           if (requiredRole && userRole !== requiredRole) {
-            resolve(false);
+            router.navigate(['auth/login']).then(() => resolve(false));
           } else {
             resolve(true);
           }

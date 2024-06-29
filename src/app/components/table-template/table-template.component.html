@@ -7,11 +7,8 @@
   <p-table
     dataKey="id"
     [columns]="cols"
-    [value]="objects"
+    [value]="objectsFromPaginator"
     [tableStyle]="{ 'min-width': '50rem' }"
-    [paginator]="true"
-    [rows]="5"
-    [rowsPerPageOptions]="[5, 10, 20]"
   >
     <ng-template pTemplate="header" let-columns>
       <tr [ngStyle]="{ height: 'auto' }">
@@ -64,6 +61,10 @@
       </tr>
     </ng-template>
   </p-table>
+  <app-custom-paginator
+    [data]="objects"
+    (dataForShow)="getDataForShow($event)"
+  ></app-custom-paginator>
 </ng-template>
 <ng-container
   *ngTemplateOutlet="
