@@ -42,9 +42,13 @@ export class AuthService {
   getToken() {
     if (typeof window !== 'undefined') {
       if (this.isTokenExpired()) {
-        this.logout;
+        this.logout();
+      } else {
+        this.token = localStorage.getItem('accessToken');
+        this.getUserRoleFromToken().subscribe((role) =>
+          this.userRoleSubject.next(role)
+        );
       }
-      this.token = localStorage.getItem('accessToken');
     }
   }
 
@@ -56,13 +60,13 @@ export class AuthService {
     if (!token) {
       return false;
     }
-    const tokenPlayload = token.split('.')[1];
-    const decodePlayload = JSON.parse(atob(tokenPlayload));
-    if (!decodePlayload.exp) {
+    const tokenPayload = token.split('.')[1];
+    const decodedPayload = JSON.parse(atob(tokenPayload));
+    if (!decodedPayload.exp) {
       return false;
     }
 
-    const expiryDate = new Date(decodePlayload.exp * 1000);
+    const expiryDate = new Date(decodedPayload.exp * 1000);
     if (!expiryDate) {
       return false;
     }
@@ -89,13 +93,17 @@ export class AuthService {
   }
 
   getEmailFromToken(): string | null {
-    const token = this.token as string;
-    const tokenPlayload = JSON.parse(atob(token.split('.')[1]));
-    return tokenPlayload.email;
+    if (!this.token) {
+      return null;
+    }
+    const tokenPayload = this.token.split('.')[1];
+    const decodedPayload = JSON.parse(atob(tokenPayload));
+    return decodedPayload.email;
   }
 
   logout() {
     localStorage.clear();
     this.userRoleSubject.next(null);
+    this.token = null;
   }
 }
