@@ -1,9 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { AuthService } from './../../services/auth.service';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { RouterLink, RouterLinkActive } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -18,18 +19,30 @@ import { MenubarModule } from 'primeng/menubar';
   templateUrl: './navbar.component.html',
   styleUrl: './navbar.component.scss',
 })
-export class NavbarComponent implements OnInit {
+export class NavbarComponent implements OnInit, OnDestroy {
   items: any[] = [];
-  loginLogoutItems: any[] = [];
   userRole: string | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(private authService: AuthService) {}
 
   ngOnInit() {
-    this.authService.getRole().subscribe((role) => {
-      this.userRole = role;
-      this.configureItems();
-    });
+    this.authService
+      .getRole()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((role) => {
+        this.userRole = role;
+        this.configureItems();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  get isAuth(): boolean {
+    return this.authService.isAuth;
   }
 
   LogOut() {

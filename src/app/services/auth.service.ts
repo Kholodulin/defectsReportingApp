@@ -9,14 +9,17 @@ import { User } from '../auth/user-model';
 })
 export class AuthService {
   private baseUrl = environment.API_URL;
+  token: string | null = null;
 
   private userRoleSubject = new BehaviorSubject<string | null>(null);
   private userRole$ = this.userRoleSubject.asObservable();
 
   constructor(private http: HttpClient) {
-    this.getUserRoleFromToken().subscribe((role) => {
-      this.userRoleSubject.next(role);
-    });
+    this.getToken();
+  }
+
+  get isAuth() {
+    return !!this.token;
   }
 
   registerUser(userDetails: User): Observable<any> {
@@ -29,10 +32,20 @@ export class AuthService {
       .pipe(
         tap((response) => {
           localStorage.setItem('accessToken', response.accessToken);
+          this.token = response.accessToken;
         }),
         switchMap(() => this.getUserRoleFromToken()),
         tap((role) => this.userRoleSubject.next(role))
       );
+  }
+
+  getToken() {
+    if (typeof window !== 'undefined') {
+      if (this.isTokenExpired()) {
+        this.logout;
+      }
+      this.token = localStorage.getItem('accessToken');
+    }
   }
 
   isTokenExpired(): boolean {
@@ -65,7 +78,7 @@ export class AuthService {
     return this.http
       .get<User[]>(`${this.baseUrl}/users?email=${email}`, {
         headers: {
-          Authorization: `Bearer ${localStorage.getItem('accessToken')}`,
+          Authorization: `Bearer ${this.token}`,
         },
       })
       .pipe(map((user) => user[0]?.role ?? null));
@@ -76,13 +89,7 @@ export class AuthService {
   }
 
   getEmailFromToken(): string | null {
-    if (typeof window === 'undefined') {
-      return null;
-    }
-    const token = localStorage.getItem('accessToken');
-    if (!token) {
-      return null;
-    }
+    const token = this.token as string;
     const tokenPlayload = JSON.parse(atob(token.split('.')[1]));
     return tokenPlayload.email;
   }
