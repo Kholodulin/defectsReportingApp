@@ -4,7 +4,6 @@ import {
   Output,
   EventEmitter,
   OnChanges,
-  SimpleChanges,
 } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { DropdownModule } from 'primeng/dropdown';
@@ -21,7 +20,7 @@ export class CustomPaginatorComponent<T> implements OnChanges {
   @Input() data: T[] = [];
   @Output() dataForShow = new EventEmitter<T[]>();
 
-  selectedRowsCount: number = 2;
+  selectedRowsCount: number = 5;
   rowsPerPageList: { label: number; value: number }[];
 
   currentPage: number = 0;
@@ -34,10 +33,12 @@ export class CustomPaginatorComponent<T> implements OnChanges {
       { label: 15, value: 15 },
     ];
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    this.totalPages = Math.ceil(this.data.length / this.selectedRowsCount);
-    this.emitDataForShow();
+  ngOnChanges(): void {
+    setTimeout(() => {
+      this.totalPages = Math.ceil(this.data.length / this.selectedRowsCount);
+      console.log('totalPages', this.totalPages);
+      this.emitDataForShow();
+    }, 50);
   }
 
   emitDataForShow() {

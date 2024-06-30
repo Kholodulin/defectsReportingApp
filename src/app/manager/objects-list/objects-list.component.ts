@@ -45,15 +45,19 @@ export class ObjectsListComponent {
     address: [''],
     requestsCount: [0],
   });
+
   constructor(private objectService: ObjectService, private fb: FormBuilder) {}
+
   ngOnInit() {
     this.objectService.getAllObjects().subscribe((data) => {
       this.objects = data;
     });
   }
+
   get objectName() {
     return this.addForm.controls['name'];
   }
+
   editObject(id: string): void {
     this.objectService.findObjectById(id).subscribe((object: ObjectModel) => {
       this.editingObject = object;
@@ -63,6 +67,7 @@ export class ObjectsListComponent {
       this.editDialogVisible = true;
     });
   }
+
   deleteObject(id: string): void {
     this.objectService.delObject(id).subscribe(() => {
       this.objectService
@@ -70,10 +75,11 @@ export class ObjectsListComponent {
         .subscribe((data) => (this.objects = data));
     });
   }
+
   showAddDialog() {
-    this.editingObject = new ObjectModel();
     this.addDialogvisible = true;
   }
+
   addNewObject() {
     if (this.addForm.valid) {
       const postData = { ...this.addForm.value, requestsCount: 0 };
@@ -85,8 +91,10 @@ export class ObjectsListComponent {
             .subscribe((data) => (this.objects = data));
           this.addDialogvisible = false;
         });
+      this.addForm.reset();
     }
   }
+
   onSaveChangesClick() {
     this.showValidationErrors = true;
     if (

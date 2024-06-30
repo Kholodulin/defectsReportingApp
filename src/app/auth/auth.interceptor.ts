@@ -33,7 +33,7 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         !req.url.endsWith('/api/token') &&
         !isExcludedRoute
       ) {
-        authService.refreshAccessToken().pipe(
+        return authService.refreshAccessToken().pipe(
           switchMap((response) => {
             authService.saveToken(response.accessToken);
             const newAuthReq = req.clone({
