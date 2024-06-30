@@ -20,8 +20,10 @@ import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit, OnDestroy {
   items: any[] = [];
   userRole: string | null = null;
+  private destroy$ = new Subject<void>();
   private destroy$ = new Subject<void>();
 
   constructor(private authService: AuthService) {}
@@ -38,9 +40,26 @@ export class NavbarComponent implements OnInit, OnDestroy {
         this.userRole = role;
         this.configureItems();
       });
+    this.authService
+      .getRole()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((role) => {
+        this.userRole = role;
+        this.configureItems();
+      });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  get isAuth(): boolean {
+    return this.authService.isAuth;
   }
 
   LogOut() {
+    this.router.navigate(['auth/login']);
     this.authService.logout();
     this.userRole = '';
     this.configureItems();

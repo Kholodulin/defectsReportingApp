@@ -57,6 +57,19 @@ export class AuthService {
       );
   }
 
+  getToken() {
+    if (typeof window !== 'undefined') {
+      if (this.isTokenExpired()) {
+        this.logout();
+      } else {
+        this.token = localStorage.getItem('accessToken');
+        this.getUserRoleFromToken().subscribe((role) =>
+          this.userRoleSubject.next(role)
+        );
+      }
+    }
+  }
+
   registerUser(userDetails: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, userDetails);
   }

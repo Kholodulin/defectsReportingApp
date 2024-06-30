@@ -28,7 +28,7 @@ import { forkJoin, map, mergeMap } from 'rxjs';
   ],
 })
 export class RequestsListComponent implements OnInit {
-  requests: RequestModel[]=[];
+  requests: RequestModel[] = [];
   statusOptions: { label: string; value: string }[];
 
   cols: Column[] = [
