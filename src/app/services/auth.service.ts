@@ -2,17 +2,8 @@ import { CookieService } from 'ngx-cookie-service';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
-import {
-  BehaviorSubject,
-  Observable,
-  catchError,
-  map,
-  of,
-  tap,
-  throwError,
-} from 'rxjs';
+import { BehaviorSubject, Observable, catchError, tap, throwError } from 'rxjs';
 import { Router } from '@angular/router';
-
 @Injectable({
   providedIn: 'root',
 })
@@ -56,20 +47,6 @@ export class AuthService {
         })
       );
   }
-
-  getToken() {
-    if (typeof window !== 'undefined') {
-      if (this.isTokenExpired()) {
-        this.logout();
-      } else {
-        this.token = localStorage.getItem('accessToken');
-        this.getUserRoleFromToken().subscribe((role) =>
-          this.userRoleSubject.next(role)
-        );
-      }
-    }
-  }
-
   registerUser(userDetails: any): Observable<any> {
     return this.http.post(`${this.baseUrl}/register`, userDetails);
   }

@@ -15,7 +15,6 @@ import { InputTextareaModule } from 'primeng/inputtextarea';
 import { TableTemplateComponent } from '../../components/table-template/table-template.component';
 import { CardModule } from 'primeng/card';
 import { ObjectService } from '../../services/object.service';
-
 @Component({
   selector: 'app-objects-list',
   standalone: true,
@@ -40,26 +39,21 @@ export class ObjectsListComponent {
   editDialogVisible: boolean = false;
   editingObject: ObjectModel = new ObjectModel();
   showValidationErrors: boolean = false;
-
   addForm = this.fb.group({
     name: ['', [Validators.required]],
     registrationDate: [new Date()],
     address: [''],
     requestsCount: [0],
   });
-
   constructor(private objectService: ObjectService, private fb: FormBuilder) {}
-
   ngOnInit() {
     this.objectService.getAllObjects().subscribe((data) => {
       this.objects = data;
     });
   }
-
   get objectName() {
     return this.addForm.controls['name'];
   }
-
   editObject(id: string): void {
     this.objectService.findObjectById(id).subscribe((object: ObjectModel) => {
       this.editingObject = object;
@@ -69,7 +63,6 @@ export class ObjectsListComponent {
       this.editDialogVisible = true;
     });
   }
-
   deleteObject(id: string): void {
     this.objectService.delObject(id).subscribe(() => {
       this.objectService
@@ -77,12 +70,10 @@ export class ObjectsListComponent {
         .subscribe((data) => (this.objects = data));
     });
   }
-
   showAddDialog() {
     this.editingObject = new ObjectModel();
     this.addDialogvisible = true;
   }
-
   addNewObject() {
     if (this.addForm.valid) {
       const postData = { ...this.addForm.value, requestsCount: 0 };
@@ -96,7 +87,6 @@ export class ObjectsListComponent {
         });
     }
   }
-
   onSaveChangesClick() {
     this.showValidationErrors = true;
     if (
@@ -106,7 +96,6 @@ export class ObjectsListComponent {
     ) {
       return;
     }
-
     let id = this.editingObject.id;
     this.objectService.updateObject(id, this.editingObject).subscribe(
       (updatedObject) => {

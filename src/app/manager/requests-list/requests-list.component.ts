@@ -11,7 +11,6 @@ import { DropdownModule } from 'primeng/dropdown';
 import { Column } from '../../models/shared-models';
 import { CustomDatePipe } from '../../pipes/custom-date.pipe';
 import { forkJoin, map, mergeMap } from 'rxjs';
-
 @Component({
   selector: 'app-requests-list',
   standalone: true,
@@ -37,7 +36,6 @@ export class RequestsListComponent implements OnInit {
     { field: 'submissionDate', header: 'submissionDate' },
     { field: 'objectId', header: 'targetObject' },
   ];
-
   constructor(
     private requestService: RequestService,
     private objectService: ObjectService
@@ -48,7 +46,6 @@ export class RequestsListComponent implements OnInit {
       { label: 'Completed', value: 'Completed' },
     ];
   }
-
   ngOnInit() {
     this.requestService
       .getAllRequests()
@@ -79,7 +76,6 @@ export class RequestsListComponent implements OnInit {
         this.requests = updatedRequests;
       });
   }
-
   onDropdownChange(request: RequestModel) {
     this.requestService.updateRequest(request.id, request).subscribe(
       (response) => {
