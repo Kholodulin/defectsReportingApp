@@ -54,16 +54,24 @@ export class RequestsListComponent implements OnInit {
       .getAllRequests()
       .pipe(
         mergeMap((requests) => {
-          const objectRequests = requests.map((request) =>
-            this.objectService.findObjectById(request.objectId).pipe(
-              map((object) => ({
-                ...request,
-                objectId: object.name,
-              }))
-            )
+          const objectIds = Array.from(
+            new Set(requests.map((req) => req.objectId))
+          ); // уникальные objectId
+          const objectRequests = objectIds.map((id) =>
+            this.objectService
+              .findObjectById(id)
+              .pipe(map((object) => ({ id, name: object.name })))
           );
           return forkJoin(objectRequests).pipe(
-            map((updatedRequests) => updatedRequests)
+            map((objects) => {
+              const objectMap = new Map(
+                objects.map((obj) => [obj.id, obj.name])
+              );
+              return requests.map((request) => ({
+                ...request,
+                objectId: objectMap.get(request.objectId) || request.objectId,
+              }));
+            })
           );
         })
       )

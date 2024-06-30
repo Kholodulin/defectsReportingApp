@@ -2,9 +2,9 @@
   "name": "defect-reporting-app",
   "version": "0.0.0",
   "scripts": {
-    "express": "node expressServer.js",
+    "express": "node expressServer/main.js",
     "ng": "ng",
-    "start": "ng server",
+    "start": "ng serve",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",

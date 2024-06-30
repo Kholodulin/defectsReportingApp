@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../../environments/environment';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Observable, catchError, throwError } from 'rxjs';
 import { RequestModel } from '../models/request-model';
 
 @Injectable({
@@ -15,7 +15,6 @@ export class RequestService {
   getAllRequests(): Observable<RequestModel[]> {
     return this.http.get<RequestModel[]>(this.requestsUrl);
   }
-
   submitRequest(req: RequestModel): Observable<RequestModel> {
     return this.http.post<RequestModel>(this.requestsUrl, req);
   }
