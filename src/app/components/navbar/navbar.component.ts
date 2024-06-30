@@ -1,10 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { AuthService } from './../../services/auth.service';
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { InputTextModule } from 'primeng/inputtext';
 import { MenubarModule } from 'primeng/menubar';
-import { Subject, takeUntil } from 'rxjs';
+import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-navbar',
@@ -20,13 +20,26 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './navbar.component.scss',
 })
 export class NavbarComponent implements OnInit, OnDestroy {
+export class NavbarComponent implements OnInit, OnDestroy {
   items: any[] = [];
   userRole: string | null = null;
   private destroy$ = new Subject<void>();
+  private destroy$ = new Subject<void>();
 
-  constructor(private authService: AuthService, private router: Router) {}
+  constructor(private authService: AuthService) {}
+
+  get isAuth() {
+    return this.authService.isAuth;
+  }
 
   ngOnInit() {
+    this.authService
+      .getRole()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((role) => {
+        this.userRole = role;
+        this.configureItems();
+      });
     this.authService
       .getRole()
       .pipe(takeUntil(this.destroy$))
@@ -48,6 +61,7 @@ export class NavbarComponent implements OnInit, OnDestroy {
   LogOut() {
     this.router.navigate(['auth/login']);
     this.authService.logout();
+    this.userRole = '';
     this.configureItems();
   }
 
@@ -71,5 +85,9 @@ export class NavbarComponent implements OnInit, OnDestroy {
         routerLink: ['/submit-request'],
       },
     ];
+  }
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 }

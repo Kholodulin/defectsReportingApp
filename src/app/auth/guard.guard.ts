@@ -2,30 +2,15 @@ import { inject } from '@angular/core';
 import { CanActivateFn, Router } from '@angular/router';
 import { AuthService } from '../services/auth.service';
 
-export const authGuard: CanActivateFn = (route, state) => {
-  const router = inject(Router);
+export const authGuard: CanActivateFn = () => {
   const authService = inject(AuthService);
+  const router = inject(Router);
 
-  return new Promise<boolean>((resolve) => {
-    if (!authService.isTokenExpired()) {
-      authService.getUserRoleFromToken().subscribe(
-        (userRole) => {
-          const requiredRole = route.data['role'];
+  const isLoggedIn = authService.isAuth;
 
-          if (requiredRole && userRole !== requiredRole) {
-            router.navigate(['auth/login']).then(() => resolve(false));
-          } else {
-            resolve(true);
-          }
-        },
-        (error) => {
-          resolve(false);
-          console.log(error);
-        }
-      );
-    } else {
-      authService.logout();
-      router.navigate(['auth/login']).then(() => resolve(false));
-    }
-  });
+  if (isLoggedIn) {
+    return true;
+  }
+
+  return router.navigate(['auth/login']);
 };

@@ -23,7 +23,7 @@ import { MessageService } from 'primeng/api';
 import { FileUploadService } from '../../services/file-upload.service';
 import { v4 as uuidv4 } from 'uuid';
 import { RequestService } from '../../services/request.service';
-import { ObjectService } from './../../services/object.service';
+import { ObjectService } from '../../services/object.service';
 
 @Component({
   selector: 'app-submit-request',
