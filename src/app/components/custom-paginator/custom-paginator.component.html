@@ -5,7 +5,16 @@
     (onClick)="onDoubleLeft()"
   />
   <p-button icon="pi pi-angle-left" [rounded]="true" (onClick)="onLeft()" />
-  {{ currentPage + 1 }} / {{ totalPages }}
+
+  <span
+    *ngFor="let page of getPagesArray()"
+    (click)="goToPage(page)"
+    [class.active]="currentPage + 1 === page"
+    class="page-number"
+  >
+    {{ page }}
+  </span>
+
   <p-button icon="pi pi-angle-right" [rounded]="true" (onClick)="onRight()" />
   <p-button
     icon="pi pi-angle-double-right"
