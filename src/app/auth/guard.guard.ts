@@ -12,13 +12,11 @@ export const authGuard: CanActivateFn = (): Observable<boolean> => {
       if (token) {
         return true;
       } else {
-        console.log('router.navigate');
         router.navigate(['auth/login']);
         return false;
       }
     }),
-    catchError(() => {
-      console.log('router.navigate');
+    catchError((error) => {
       router.navigate(['auth/login']);
       return of(false);
     })

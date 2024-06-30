@@ -5,21 +5,24 @@ import { inject } from '@angular/core';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
-  const accessToken = localStorage.getItem('accessToken');
   let authReq = req;
+  let isExcludedRoute = null;
+  if (authService.isBrowser()) {
+    const accessToken = localStorage.getItem('accessToken');
 
-  // Исключаем путь для запросов, которые не требуют аутентификации
-  const isExcludedRoute =
-    (req.method === 'POST' && req.url.includes('/api/requests')) ||
-    (req.method === 'GET' && req.url.includes('/api/constructionObjects'));
+    // Исключаем путь для запросов, которые не требуют аутентификации
+    isExcludedRoute =
+      (req.method === 'POST' && req.url.includes('/api/requests')) ||
+      (req.method === 'GET' && req.url.includes('/api/constructionObjects'));
 
-  if (accessToken && !isExcludedRoute) {
-    authReq = req.clone({
-      setHeaders: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-      withCredentials: true,
-    });
+    if (accessToken && !isExcludedRoute) {
+      authReq = req.clone({
+        setHeaders: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+        withCredentials: true,
+      });
+    }
   }
 
   return next(authReq).pipe(
@@ -31,7 +34,9 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
       ) {
         return authService.refreshAccessToken().pipe(
           switchMap((tokenResponse) => {
-            localStorage.setItem('accessToken', tokenResponse.accessToken);
+            if (authService.isBrowser()) {
+              localStorage.setItem('accessToken', tokenResponse.accessToken);
+            }
             const newAuthReq = req.clone({
               setHeaders: {
                 Authorization: `Bearer ${tokenResponse.accessToken}`,

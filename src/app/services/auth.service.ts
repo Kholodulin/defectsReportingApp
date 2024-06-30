@@ -98,7 +98,7 @@ export class AuthService {
     }
   }
 
-  private isBrowser(): boolean {
+  isBrowser(): boolean {
     return typeof window !== 'undefined';
   }
 
