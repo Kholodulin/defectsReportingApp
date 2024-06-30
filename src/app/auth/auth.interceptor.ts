@@ -1,28 +1,29 @@
-import { HttpInterceptorFn } from '@angular/common/http';
+import {
+  HttpHandlerFn,
+  HttpInterceptorFn,
+  HttpRequest,
+} from '@angular/common/http';
 import { catchError, switchMap, throwError } from 'rxjs';
-import { AuthService } from '../services/auth.service';
 import { inject } from '@angular/core';
+import { AuthService } from '../services/auth.service';
 
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authService = inject(AuthService);
+  const token = authService.token;
   let authReq = req;
-  let isExcludedRoute = null;
-  if (authService.isBrowser()) {
-    const accessToken = localStorage.getItem('accessToken');
 
-    // Исключаем путь для запросов, которые не требуют аутентификации
-    isExcludedRoute =
-      (req.method === 'POST' && req.url.includes('/api/requests')) ||
-      (req.method === 'GET' && req.url.includes('/api/constructionObjects'));
+  // Исключаем путь для запросов, которые не требуют аутентификации
+  let isExcludedRoute =
+    (req.method === 'POST' && req.url.includes('/api/requests')) ||
+    (req.method === 'GET' && req.url.includes('/api/constructionObjects'));
 
-    if (accessToken && !isExcludedRoute) {
-      authReq = req.clone({
-        setHeaders: {
-          Authorization: `Bearer ${accessToken}`,
-        },
-        withCredentials: true,
-      });
-    }
+  if (token && !isExcludedRoute) {
+    authReq = req.clone({
+      setHeaders: {
+        Authorization: `Bearer ${token}`,
+      },
+      withCredentials: true,
+    });
   }
 
   return next(authReq).pipe(
@@ -32,14 +33,12 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
         !req.url.endsWith('/api/token') &&
         !isExcludedRoute
       ) {
-        return authService.refreshAccessToken().pipe(
-          switchMap((tokenResponse) => {
-            if (authService.isBrowser()) {
-              localStorage.setItem('accessToken', tokenResponse.accessToken);
-            }
+        authService.refreshAccessToken().pipe(
+          switchMap((response) => {
+            authService.saveToken(response.accessToken);
             const newAuthReq = req.clone({
               setHeaders: {
-                Authorization: `Bearer ${tokenResponse.accessToken}`,
+                Authorization: `Bearer ${response.accessToken}`,
               },
               withCredentials: true,
             });

@@ -28,8 +28,8 @@ import { forkJoin, map, mergeMap } from 'rxjs';
   ],
 })
 export class RequestsListComponent implements OnInit {
-  requests!: RequestModel[];
-  statusOptions!: { label: string; value: string }[];
+  requests: RequestModel[]=[];
+  statusOptions: { label: string; value: string }[];
 
   cols: Column[] = [
     { field: 'title', header: 'title' },

@@ -35,7 +35,7 @@ import { ObjectService } from '../../services/object.service';
   ],
 })
 export class ObjectsListComponent {
-  objects!: ObjectModel[];
+  objects: ObjectModel[] = [];
   addDialogvisible: boolean = false;
   editDialogVisible: boolean = false;
   editingObject: ObjectModel = new ObjectModel();

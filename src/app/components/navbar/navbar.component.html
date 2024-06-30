@@ -1,5 +1,5 @@
 <p-menubar [model]="items">
-  <div *ngIf="!userRole" class="flex ml-auto">
+  <div *ngIf="!isAuth" class="flex ml-auto">
     <a
       [routerLink]="['auth/login']"
       class="p-menuitem-link"
@@ -17,7 +17,7 @@
       <span>Register</span>
     </a>
   </div>
-  <div *ngIf="userRole" class="ml-auto">
+  <div *ngIf="isAuth" class="ml-auto">
     <a (click)="LogOut()" class="p-menuitem-link">
       <span>Logout</span>
       <span class="pi pi-sign-out ml-2"></span>

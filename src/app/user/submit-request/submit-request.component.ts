@@ -52,7 +52,7 @@ export class SubmitRequestComponent implements OnInit {
 
   objects: ObjectModel[] = [];
   object: ObjectModel = new ObjectModel();
-  requestLink!: string;
+  requestLink: string = '';
   isTableVisible: boolean = false;
   selectedFiles: File[] = [];
 

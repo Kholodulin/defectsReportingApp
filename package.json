@@ -34,6 +34,7 @@
     "engine.io": "^6.5.4",
     "express": "^4.19.2",
     "jsonwebtoken": "^9.0.2",
+    "ngx-cookie-service": "^17.1.0",
     "primeflex": "^3.3.1",
     "primeicons": "^7.0.0",
     "primeng": "^17.18.0",

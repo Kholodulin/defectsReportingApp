@@ -7,7 +7,7 @@ const getAll = (req, res) => {
 const create = (req, res) => {
   const newRequest = { ...req.body, id: (requests.length + 1).toString() };
   requests.push(newRequest);
-  res.status(201).json({ message: "Request added" });
+  res.status(201).json(newRequest);
 };
 
 const update = (req, res) => {

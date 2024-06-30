@@ -8,7 +8,7 @@ const jwt = require("jsonwebtoken");
 const { users } = require("../models");
 
 const generateAccessToken = (user) => {
-  return jwt.sign(user, JWT_SECRET, { expiresIn: "2m" });
+  return jwt.sign(user, JWT_SECRET, { expiresIn: "15m" });
 };
 
 const generateRefreshToken = (user) => {

@@ -12,7 +12,6 @@ import { User } from '../user-model';
   styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
-  user!: User;
   requestLink: string = '/auth/login';
 
   registerForm = this.fb.group(

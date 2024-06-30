@@ -1,4 +1,5 @@
-import { Injectable, Injector } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../environments/environment';
 import {
@@ -20,14 +21,26 @@ export class AuthService {
   private userRoleSubject = new BehaviorSubject<string | null>(null);
   private userRole$ = this.userRoleSubject.asObservable();
 
-  constructor(private http: HttpClient, private router: Router) {
-    this.getAccessToken().subscribe((token) => {
-      if (token) {
-        localStorage.setItem('accessToken', token);
-        const role = this.getUserRoleFromToken(token);
-        this.userRoleSubject.next(role);
-      }
-    });
+  token: string | null = null;
+
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private cookieService: CookieService
+  ) {
+    const token = this.cookieService.get('token');
+    if (token) {
+      this.saveToken(token);
+      const role = this.getRoleFromToken();
+      this.userRoleSubject.next(role);
+    }
+  }
+
+  get isAuth() {
+    if (!this.token) {
+      this.token = this.cookieService.get('token');
+    }
+    return !!this.token;
   }
 
   login(credentials: { email: string; password: string }): Observable<any> {
@@ -37,8 +50,8 @@ export class AuthService {
       })
       .pipe(
         tap((response) => {
-          localStorage.setItem('accessToken', response.accessToken);
-          const role = this.getUserRoleFromToken(response.accessToken);
+          this.saveToken(response.accessToken);
+          const role = this.getRoleFromToken();
           this.userRoleSubject.next(role);
         })
       );
@@ -49,25 +62,10 @@ export class AuthService {
   }
 
   logout(): void {
-    localStorage.removeItem('accessToken');
+    this.cookieService.deleteAll();
+    this.token = null;
     this.userRoleSubject.next(null);
     this.router.navigate(['auth/login']);
-  }
-
-  getAccessToken(): Observable<string | null> {
-    if (this.isBrowser()) {
-      const token = localStorage.getItem('accessToken');
-      if (!token) {
-        return this.refreshAccessToken().pipe(
-          map((response) => response.accessToken),
-          catchError(() => of(null))
-        );
-      } else {
-        return of(token);
-      }
-    } else {
-      return of(null);
-    }
   }
 
   refreshAccessToken(): Observable<{ accessToken: string }> {
@@ -79,9 +77,7 @@ export class AuthService {
       )
       .pipe(
         tap((response) => {
-          if (this.isBrowser()) {
-            localStorage.setItem('accessToken', response.accessToken);
-          }
+          this.saveToken(response.accessToken);
         }),
         catchError((error) => {
           this.logout();
@@ -89,20 +85,22 @@ export class AuthService {
         })
       );
   }
-  getUserRoleFromToken(token: string): string | null {
-    if (token) {
-      const userRole = JSON.parse(atob(token.split('.')[1])).role;
+
+  getRoleFromToken(): string | null {
+    if (this.token) {
+      const userRole = JSON.parse(atob(this.token.split('.')[1])).role;
       return userRole;
     } else {
       return null;
     }
   }
 
-  isBrowser(): boolean {
-    return typeof window !== 'undefined';
-  }
-
   getRole(): Observable<string | null> {
     return this.userRole$;
+  }
+
+  saveToken(token: string) {
+    this.token = token;
+    this.cookieService.set('token', this.token);
   }
 }
