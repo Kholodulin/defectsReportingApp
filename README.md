@@ -1,40 +1,54 @@
-# DefectReportingApp
+# Сервис приёма заявок на устранение недочетов 🛠️
 
-Angular application for managing requests for eliminating construction defects. 
-The application has two roles: a construction company manager and a user submitting a request.
+Это - приложение для управления заявками на устранение дефектов строительных объектов.
+Оно позволяет менеджерам строительных объектов принимать отчеты о дефектах
+и ​​предоставляет клиентам интерфейс для отправки своих заявок.
 
-## Installation and Setup
+## Основные функции
 
-Requirements
+### Менеджер 👔
 
-1. Node.js and npm
-2. Angular 17 CLI (npm install -g @angular/cli)
-3. JSON Server (npm install -g json-server)
+ - Создание, просмотр, редактирование и удаление строительных объектов.
+ - Отображение списка полученных заявок и списка объектов с фильтрацией и пагинацией.
+ - Просмотр списка заявок с деталями и изменение статуса заявок (отклонить или выполнить).
 
-Instructions
+### Пользователь 🧑
 
-1. Clone the repository:
-    ```sh
+ - Заполнение формы для отправки заявки на устранение дефекта
+ - Получение ссылки для отслеживания статуса поданной заявки.
+
+## Быстрый доступ
+
+📧 Email: mail@mail.ru
+🔑 password: 12345678
+
+## Скриншоты
+
+#### Отправка Заявки
+
+![submit_request](https://github.com/Kholodulin/defectsReportingApp/assets/90597757/b01e6543-3490-42a6-8e3f-b51088484d45)
+
+#### Просмотр заявок
+
+![requests-list](https://github.com/Kholodulin/defectsReportingApp/assets/90597757/900bda17-81e4-4bd9-aa2b-2ea59872f714)
+
+## Установка и запуск
+
+Требования:
+Node.js and npm
+Angular 17 CLI (npm install -g @angular/cli@17)
+1. Установка и настройка:
+   ```sh
     git clone https://github.com/Kholodulin/defectsReportingApp.git
-    cd construction-defect-management
-    ```
-2. Install the dependencies:
-   ```sh
+    cd defectsReportingApp
     npm install
-    ```
-3. Start JSON Server:
+   ```
+2. Запустить Express сервер:
    ```sh
-    json-server --watch db.json
-    ```
-4. Start the Angular application:
-    ```sh
-    ng serve
-    ```
-5. Open your browser and navigate to http://localhost:4200
-
-## Technologies Used
-
-1. Angular
-2. TypeScript
-3. JSON Server
-4. HTML/CSS
+    npm run express
+   ```
+3. Запустить Angular приложение:
+   ```sh
+   ng serve
+   ```
+4. Перейти по ссылке в браузере http://localhost:4200
