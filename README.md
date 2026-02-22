@@ -1,54 +1,54 @@
-# Сервис приёма заявок на устранение недочетов 🛠️
+# Defect Request Receipt Service 🛠️
 
-Это - приложение для управления заявками на устранение дефектов строительных объектов.
-Оно позволяет менеджерам строительных объектов принимать отчеты о дефектах
-и ​​предоставляет клиентам интерфейс для отправки своих заявок.
+This is an application for managing defect requests for construction projects.
+It allows construction site managers to receive defect reports
+and provides clients with an interface for submitting their requests.
 
-## Основные функции
+## Main Features
 
-### Менеджер 👔
+### Manager 👔
 
- - Создание, просмотр, редактирование и удаление строительных объектов.
- - Отображение списка полученных заявок и списка объектов с фильтрацией и пагинацией.
- - Просмотр списка заявок с деталями и изменение статуса заявок (отклонить или выполнить).
+- Create, view, edit, and delete construction projects.
+- Display a list of received requests and a list of objects with filtering and pagination.
+- View a list of requests with details and change the status of requests (reject or complete).
 
-### Пользователь 🧑
+### User 🧑
 
- - Заполнение формы для отправки заявки на устранение дефекта
- - Получение ссылки для отслеживания статуса поданной заявки.
+- Fill out a form to submit a defect request
+- Receive a link to track the status of a submitted request.
 
-## Быстрый доступ
+## Quick Access
 
 📧 Email: mail@mail.ru
-🔑 password: 12345678
+🔑 Password: 12345678
 
-## Скриншоты
+## Screenshots
 
-#### Отправка Заявки
+#### Submit Request
 
 ![submit_request](https://github.com/Kholodulin/defectsReportingApp/assets/90597757/b01e6543-3490-42a6-8e3f-b51088484d45)
 
-#### Просмотр заявок
+#### View applications
 
 ![requests-list](https://github.com/Kholodulin/defectsReportingApp/assets/90597757/900bda17-81e4-4bd9-aa2b-2ea59872f714)
 
-## Установка и запуск
+## Installation and Launch
 
-Требования:
+Requirements:
 Node.js and npm
 Angular 17 CLI (npm install -g @angular/cli@17)
-1. Установка и настройка:
+1. Installation and configuration:
    ```sh
     git clone https://github.com/Kholodulin/defectsReportingApp.git
     cd defectsReportingApp
     npm install
    ```
-2. Запустить Express сервер:
+2. Start the Express server:
    ```sh
     npm run express
    ```
-3. Запустить Angular приложение:
+3. Run the Angular application:
    ```sh
    ng serve
    ```
-4. Перейти по ссылке в браузере http://localhost:4200
+4. Follow the link in your browser http://localhost:4200
